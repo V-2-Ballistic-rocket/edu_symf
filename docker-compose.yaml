@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  php-fpm:
+    build: ./docker/php-fpm
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./edu_symf:/app
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+
+#  postgres:
+#    image: postgres:${POSTGRES_VERSION:-15}-alpine
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_DB: ${POSTGRES_DB:-app}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+#      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+#    volumes:
+#      - database_data:/var/lib/postgresql/data:rw
+
+volumes:
+  database_data:
