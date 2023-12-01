@@ -1,13 +1,12 @@
 <?php
 
-namespace App\InfrastructureLayer\Postgres;
+namespace App\InfrastructureLayer;
 
-readonly class SaveUserDTO
+readonly class GotUserDTO
 {
     public function __construct(
         public string $firstName,
         public string $lastName
     )
-    {
-    }
+    {}
 }
