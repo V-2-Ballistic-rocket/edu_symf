@@ -2,12 +2,16 @@
 
 namespace App\InfrastructureLayer\PostgresWithPDO;
 
-use App\InfrastructureLayer\EditUserDTO;
-use App\InfrastructureLayer\GotUserDTO;
-use App\InfrastructureLayer\SaveUserDTO;
+use App\InfrastructureLayer\StorageManagerInterface;
+use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
+use App\InfrastructureLayer\UserDTO\EditUserDTO;
+use App\InfrastructureLayer\UserDTO\GetUserDTO;
+use App\InfrastructureLayer\UserDTO\GotUserDTO;
+use App\InfrastructureLayer\UserDTO\SavedUserDTO;
+use App\InfrastructureLayer\UserDTO\SaveUserDTO;
 use PDO;
 
-class DBManager
+class DBManager implements StorageManagerInterface
 {
     //private string $queryGetUser = "SELECT firstName, lastName FROM users WHERE user_id = {$id};";
 
@@ -24,34 +28,34 @@ class DBManager
         return $DBH;
     }
 
-    public function saveUser(SaveUserDTO $saveUserDTO) : int
+    public function saveUser(SaveUserDTO $saveUserDTO) : SavedUserDTO
     {
         $DBH = $this->initDB();
         $DBH->query("INSERT INTO users (firstName, lastName)
         VALUES ('{$saveUserDTO->firstName}', '{$saveUserDTO->lastName}');");
 
-        return $DBH->lastInsertId();
+        return new SavedUserDTO($DBH->lastInsertId());
     }
 
-    public function getUser(int $id) : GotUserDTO
+    public function getUser(GetUserDTO $getUserDTO) : GotUserDTO
     {
         $DBH = $this->initDB();
-        $result = $DBH->query("SELECT firstname, lastname FROM users WHERE user_id = {$id};")
+        $result = $DBH->query("SELECT firstname, lastname FROM users WHERE user_id = {$getUserDTO->id};")
             ->fetch(PDO::PARAM_STR);
         return new GotUserDTO($result['firstname'], $result['lastname']);
     }
 
-    public function deleteUser(int $id) : void
+    public function deleteUser(DeleteUserDTO  $deleteUserDTO) : void
     {
-        $this->initDB()->query("DELETE FROM users WHERE user_id = {$id}");
+        $this->initDB()->query("DELETE FROM users WHERE user_id = {$deleteUserDTO->id}");
     }
 
-    public function editUser(EditUserDTO $editUserDTO)
+    public function editUser(EditUserDTO $editUserDTO) : void
     {
         $DBH = $this->initDB();
         $result = $DBH->query(
             "UPDATE product
-            SET firstname = '{$editUserDTO->firstname}', lastname = '{$editUserDTO->lastname}'
+            SET firstname = '{$editUserDTO->firstName}', lastname = '{$editUserDTO->lastName}'
             WHERE product_id = {$editUserDTO->id}"
         );
     }

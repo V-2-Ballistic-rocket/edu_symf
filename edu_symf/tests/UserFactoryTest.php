@@ -2,20 +2,24 @@
 
 namespace App\Tests;
 
-use App\DomainLayer\User\CreateUserDTO;
-use App\DomainLayer\User\UserFactory;
-use PHPUnit\Framework\TestCase;
+use App\DomainLayer\Factory\UserFactory;
+use App\DomainLayer\UserDTO\CreateUserDTO;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class UserFactoryTest extends TestCase
+class UserFactoryTest extends KernelTestCase
 {
     /**
      * @dataProvider validUserFirstNameProvider
      */
     public function testWhenFirstNameIsValid($firstName): void
     {
+        self::bootKernel();
+        $container = self::getContainer();
+        $userFactory = $container->get(UserFactory::class);
+
         $expectedResult = array($firstName, 'Petrov');
 
-        $user = UserFactory::createUser(new CreateUserDTO($firstName, 'Petrov'));
+        $user = $userFactory->createUser(new CreateUserDTO($firstName, 'Petrov'));
         $actualResult = array($user->getFirstName(), $user->getLastName());
 
         $this->assertEquals($expectedResult, $actualResult);
@@ -34,9 +38,12 @@ class UserFactoryTest extends TestCase
      */
     public function testWhenLastNameIsValid($lastName): void
     {
-        $expectedResult = array('Petr', $lastName);
+        self::bootKernel();
+        $container = self::getContainer();
 
-        $user = UserFactory::createUser(new CreateUserDTO('Petr', $lastName));
+        $expectedResult = array('Petr', $lastName);
+        $userFactory = $container->get(UserFactory::class);
+        $user = $userFactory->createUser(new CreateUserDTO('Petr', $lastName));
         $actualResult = array($user->getFirstName(), $user->getLastName());
 
         $this->assertEquals($expectedResult, $actualResult);
@@ -55,7 +62,11 @@ class UserFactoryTest extends TestCase
      */
     public function testWhereFirstNameInvalid($firstName): void
     {
-        $actualResult = UserFactory::createUser(new CreateUserDTO($firstName, 'Petrov'));
+        self::bootKernel();
+        $container = self::getContainer();
+        $userFactory = $container->get(UserFactory::class);
+
+        $actualResult = $userFactory->createUser(new CreateUserDTO($firstName, 'Petrov'));
 
         $this->assertNull($actualResult);
     }
@@ -73,7 +84,11 @@ class UserFactoryTest extends TestCase
      */
     public function testWhereLastNameInvalid($lastName): void
     {
-        $actualResult = UserFactory::createUser(new CreateUserDTO('Petr', $lastName));
+        self::bootKernel();
+        $container = self::getContainer();
+        $userFactory = $container->get(UserFactory::class);
+
+        $actualResult = $userFactory->createUser(new CreateUserDTO('Petr', $lastName));
 
         $this->assertNull($actualResult);
     }

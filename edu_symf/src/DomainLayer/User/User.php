@@ -2,6 +2,8 @@
 
 namespace App\DomainLayer\User;
 
+use App\DomainLayer\UserDTO\CreateUserDTO;
+
 class User
 {
     private string $firstName;
