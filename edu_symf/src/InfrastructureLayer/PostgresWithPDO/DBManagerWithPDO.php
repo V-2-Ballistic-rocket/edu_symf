@@ -40,27 +40,31 @@ class DBManagerWithPDO implements StorageManagerInterface
     }
 
     public function getUser(GetUserDTO $getUserDTO) : GotUserDTO
-    {//сейчас это делаю 16:50
+    {
         $DBH = $this->initDB();
-        $sth = $DBH->prepare("SELECT firstname, lastname FROM users WHERE id = :id;")
-            ->fetch(PDO::PARAM_STR);
         $sth = $DBH->prepare("SELECT firstname, lastname FROM users WHERE id = :id;");
         $sth->execute(['id' => $getUserDTO->id]);
+        $result = $sth->fetch(PDO::PARAM_STR);
+
         return new GotUserDTO($result['firstname'], $result['lastname']);
     }
 
     public function deleteUser(DeleteUserDTO  $deleteUserDTO) : void
     {
-        $this->initDB()->query("DELETE FROM users WHERE id = '{$deleteUserDTO->id}'");
+        $DBH = $this->initDB();
+        $sth = $DBH->prepare("DELETE FROM users WHERE id = :id");
+        $sth->execute(['id' => $deleteUserDTO->id]);
     }
 
     public function editUser(EditUserDTO $editUserDTO) : void
     {
         $DBH = $this->initDB();
-        $result = $DBH->query(
-            "UPDATE product
-            SET firstname = '{$editUserDTO->firstName}', lastname = '{$editUserDTO->lastName}'
-            WHERE product_id = {$editUserDTO->id}"
+        $sth = $DBH->prepare("UPDATE product
+            SET firstname = :firstname, lastname = :lastname
+            WHERE product_id = :id"
+        );
+        $sth->execute(
+            ['firstname' => $editUserDTO->firstName, 'lastname' => $editUserDTO->lastName, 'id' => $editUserDTO->id]
         );
     }
 }
