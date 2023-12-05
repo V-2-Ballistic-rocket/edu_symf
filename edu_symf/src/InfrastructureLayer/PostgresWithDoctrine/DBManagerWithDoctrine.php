@@ -10,10 +10,10 @@ use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\GotUserDTO;
 use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
-class DBManagerWithDoctrine implements StorageManagerInterface
+class DBManagerWithDoctrine
 {
     public function __construct(
         private ManagerRegistry $doctrine
@@ -38,20 +38,16 @@ class DBManagerWithDoctrine implements StorageManagerInterface
     {
         $entityManager = $this->doctrine->getManager();
         $user = $entityManager->getRepository(Users::class)->find($getUserDTO->id);
-        if(!$user)
-        {
-            throw new Exception("Not found", 404);
-        }
-        return new GotUserDTO($user->getFirstname(), $user->getLastname());
+        return !$user ? throw new \Exception("Not found", 404) : new GotUserDTO($user->getFirstname(), $user->getLastname());
     }
 
     public function deleteUser(DeleteUserDTO $deleteUserDTO): void
     {
         $entityManager = $this->doctrine->getManager();
-        $user = $entityManager->getRepository(Users::class)->find($getUserDTO->id);
+        $user = $entityManager->getRepository(Users::class)->find($deleteUserDTO->id);
         if(!$user)
         {
-            throw new Exception("Not found", 404);
+            throw new \Exception("Not found", 404);
         }
         $entityManager->remove($user);
     }

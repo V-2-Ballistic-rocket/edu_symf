@@ -6,16 +6,21 @@ use App\InfrastructureLayer\PostgresWithDoctrine\DBManagerWithDoctrine;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class DBManagerWithDoctrineTest extends TestCase
+class DBManagerWithDoctrineTest extends KernelTestCase
 {
-    /*
+    /**
      *@dataProvider getUserProvider
-     **/
+     */
     public function testGetUser($firstName, $lastName): void
     {
-        $dbManager = new DBManagerWithDoctrine();
+        self::bootKernel();
+        $container = self::getContainer();
+        $dbManager = $container->get(DBManagerWithDoctrine::class);
+
         $savedUserDTO = $dbManager->saveUser(new SaveUserDTO($firstName, $lastName));
 
         $gotUserDTO = $dbManager->getUser(new GetUserDTO($savedUserDTO->id));
@@ -36,9 +41,9 @@ class DBManagerWithDoctrineTest extends TestCase
         ];
     }
 
-    /*
+    /**
      *@dataProvider saveUserProvider
-     **/
+     */
     public function testSaveUser($firstName, $lastName): void
     {
         $dbManager = new DBManagerWithDoctrine();
@@ -55,10 +60,10 @@ class DBManagerWithDoctrineTest extends TestCase
     {
         return [
             'when valid data' =>
-            [
+            [[
                 'firstName' => 'Vasiliy',
                 'lastName' => 'Mahonenko'
-            ]
+            ]]
         ];
     }
 }
