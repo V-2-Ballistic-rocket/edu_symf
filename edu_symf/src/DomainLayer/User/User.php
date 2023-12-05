@@ -2,7 +2,7 @@
 
 namespace App\DomainLayer\User;
 
-use App\DomainLayer\UserDTO\CreateUserDTO;
+use App\DomainLayer\User\UserDTO\CreateUserDTO;
 
 class User
 {

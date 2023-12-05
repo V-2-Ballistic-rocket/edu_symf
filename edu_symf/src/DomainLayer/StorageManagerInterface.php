@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer;
+namespace App\DomainLayer;
 
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\EditUserDTO;
@@ -8,7 +8,6 @@ use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\GotUserDTO;
 use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
-use Doctrine\ORM\Query\AST\DeleteClause;
 
 interface StorageManagerInterface
 {

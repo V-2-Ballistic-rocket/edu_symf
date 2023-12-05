@@ -3,12 +3,12 @@
 namespace App\Tests;
 
 
-use App\DomainLayer\Factory\UserFactory;
-use App\DomainLayer\Registration\UserRegistration;
-use App\DomainLayer\UserDTO\CreateUserDTO;
-use App\DomainLayer\UserDTO\UserRegistrationDTO;
-use App\InfrastructureLayer\PostgresWithPDO\DBManager;
-use App\InfrastructureLayer\StorageManagerInterface;
+use App\DomainLayer\StorageManagerInterface;
+use App\DomainLayer\User\Factory\UserFactory;
+use App\DomainLayer\User\Registration\UserRegistration;
+use App\DomainLayer\User\UserDTO\CreateUserDTO;
+use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
+use App\InfrastructureLayer\PostgresWithPDO\DBManagerWithPDO;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
@@ -41,7 +41,7 @@ class UserRegisterTest extends KernelTestCase
 
         $saveUserDTO = new SaveUserDTO($user->getFirstName(), $user->getLastName());
 
-        $dbManager = new DBManager();
+        $dbManager = new DBManagerWithPDO();
         $id = $dbManager->saveUser($saveUserDTO)->id;
 
         $gotUserDTO = $dbManager->getUser(new GetUserDTO($id));
@@ -87,7 +87,7 @@ class UserRegisterTest extends KernelTestCase
 
         $id = $userRegistration->registrationUser(new UserRegistrationDTO($firstName, $lastName), $storageManager);
 
-        $dbManager = new DBManager();
+        $dbManager = new DBManagerWithPDO();
 
         $getUserDTO = $dbManager->getUser(new GetUserDTO($id));
 

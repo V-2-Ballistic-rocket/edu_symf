@@ -98,6 +98,8 @@
       <path value="$PROJECT_DIR$/edu_symf/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/edu_symf/vendor/symfony/deprecation-contracts" />
       <path value="$PROJECT_DIR$/edu_symf/vendor/symfony/cache-contracts" />
+      <path value="$PROJECT_DIR$/edu_symf/vendor/symfony/polyfill-uuid" />
+      <path value="$PROJECT_DIR$/edu_symf/vendor/symfony/uid" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

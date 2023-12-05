@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DomainLayer\UserDTO;
+namespace App\DomainLayer\User\UserDTO;
 
 class UserRegistrationDTO
 {

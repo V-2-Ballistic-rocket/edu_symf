@@ -2,8 +2,8 @@
 
 namespace App\Tests;
 
-use App\DomainLayer\Factory\UserFactory;
-use App\DomainLayer\UserDTO\CreateUserDTO;
+use App\DomainLayer\User\Factory\UserFactory;
+use App\DomainLayer\User\UserDTO\CreateUserDTO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserFactoryTest extends KernelTestCase

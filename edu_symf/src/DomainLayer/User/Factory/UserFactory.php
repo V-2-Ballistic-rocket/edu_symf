@@ -1,9 +1,9 @@
 <?php
 
-namespace App\DomainLayer\Factory;
+namespace App\DomainLayer\User\Factory;
 
 use App\DomainLayer\User\User;
-use App\DomainLayer\UserDTO\CreateUserDTO;
+use App\DomainLayer\User\UserDTO\CreateUserDTO;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserFactory

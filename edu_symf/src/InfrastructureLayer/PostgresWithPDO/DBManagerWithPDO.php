@@ -2,7 +2,7 @@
 
 namespace App\InfrastructureLayer\PostgresWithPDO;
 
-use App\InfrastructureLayer\StorageManagerInterface;
+use App\DomainLayer\StorageManagerInterface;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\EditUserDTO;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;
@@ -10,44 +10,48 @@ use App\InfrastructureLayer\UserDTO\GotUserDTO;
 use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
 use PDO;
+use Symfony\Component\Uid\Uuid;
 
-class DBManager implements StorageManagerInterface
+class DBManagerWithPDO implements StorageManagerInterface
 {
     //private string $queryGetUser = "SELECT firstName, lastName FROM users WHERE user_id = {$id};";
 
 
     private string $toSqlFilePath = './src/InfrastructureLayer/PostgresWithPDO/init.sql';
-    private string $connectionParams = 'pgsql:host=172.19.160.1;dbname=app2';
+    private string $connectionParams = 'pgsql:host=172.19.160.1;dbname=app';
     private string $user = 'postgres';
     private string $password = 'postgres';
     private function initDB()
     {
-        $DBH = new PDO($this->connectionParams, $this->user, $this->password);
-        $DBH->exec(file_get_contents($this->toSqlFilePath));
 
-        return $DBH;
+        //$DBH->exec(file_get_contents($this->toSqlFilePath));
+
+        return $DBH = new PDO($this->connectionParams, $this->user, $this->password);
     }
 
     public function saveUser(SaveUserDTO $saveUserDTO) : SavedUserDTO
     {
         $DBH = $this->initDB();
-        $DBH->query("INSERT INTO users (firstName, lastName)
-        VALUES ('{$saveUserDTO->firstName}', '{$saveUserDTO->lastName}');");
-
-        return new SavedUserDTO($DBH->lastInsertId());
+        $sth = $DBH->prepare("INSERT INTO users (id, firstName, lastName)
+        VALUES (:id, :firstname, :lastname);");
+        $id = Uuid::v1();
+        $sth->execute(['id' => $id, 'firstname' => $saveUserDTO->firstName, 'lastname' => $saveUserDTO->lastName]);
+        return new SavedUserDTO($id);
     }
 
     public function getUser(GetUserDTO $getUserDTO) : GotUserDTO
-    {
+    {//сейчас это делаю 16:50
         $DBH = $this->initDB();
-        $result = $DBH->query("SELECT firstname, lastname FROM users WHERE user_id = {$getUserDTO->id};")
+        $sth = $DBH->prepare("SELECT firstname, lastname FROM users WHERE id = :id;")
             ->fetch(PDO::PARAM_STR);
+        $sth = $DBH->prepare("SELECT firstname, lastname FROM users WHERE id = :id;");
+        $sth->execute(['id' => $getUserDTO->id]);
         return new GotUserDTO($result['firstname'], $result['lastname']);
     }
 
     public function deleteUser(DeleteUserDTO  $deleteUserDTO) : void
     {
-        $this->initDB()->query("DELETE FROM users WHERE user_id = {$deleteUserDTO->id}");
+        $this->initDB()->query("DELETE FROM users WHERE id = '{$deleteUserDTO->id}'");
     }
 
     public function editUser(EditUserDTO $editUserDTO) : void
