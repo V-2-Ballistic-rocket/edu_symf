@@ -10,7 +10,6 @@ use Symfony\Component\Uid\Uuid;
 class Users
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?Uuid $id = null;
 

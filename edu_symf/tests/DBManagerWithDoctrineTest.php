@@ -46,7 +46,9 @@ class DBManagerWithDoctrineTest extends KernelTestCase
      */
     public function testSaveUser($firstName, $lastName): void
     {
-        $dbManager = new DBManagerWithDoctrine();
+        self::bootKernel();
+        $container = self::getContainer();
+        $dbManager = $container->get(DBManagerWithDoctrine::class);
         $savedUserDTO = $dbManager->saveUser(new SaveUserDTO($firstName, $lastName));
 
         $gotUserDTO = $dbManager->getUser(new GetUserDTO($savedUserDTO->id));
@@ -60,10 +62,10 @@ class DBManagerWithDoctrineTest extends KernelTestCase
     {
         return [
             'when valid data' =>
-            [[
+            [
                 'firstName' => 'Vasiliy',
                 'lastName' => 'Mahonenko'
-            ]]
+            ]
         ];
     }
 }
