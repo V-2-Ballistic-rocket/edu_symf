@@ -2,6 +2,7 @@
 
 namespace App\InfrastructureLayer\PostgresWithDoctrine;
 
+use App\DomainLayer\StorageManagerInterface;
 use App\InfrastructureLayer\Entity\Users;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\EditUserDTO;
@@ -12,7 +13,7 @@ use App\InfrastructureLayer\UserDTO\SaveUserDTO;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
-class DBManagerWithDoctrine
+class DBManagerWithDoctrine implements StorageManagerInterface
 {
     public function __construct(
         private ManagerRegistry $doctrine

@@ -41,6 +41,9 @@ class DBManagerWithPDO implements StorageManagerInterface
 
     public function getUser(GetUserDTO $getUserDTO) : GotUserDTO
     {
+        if(!$getUserDTO->id){
+            throw new \Exception('Пользователь не найден', 404);
+        }
         $DBH = $this->initDB();
         $sth = $DBH->prepare("SELECT firstname, lastname FROM users WHERE id = :id;");
         $sth->execute(['id' => $getUserDTO->id]);
