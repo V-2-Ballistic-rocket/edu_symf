@@ -16,51 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class DBManagerWithPDOTest extends KernelTestCase
 {
-    /**
-     * @dataProvider validUserRegistrationTestProvider
-     */
-    public function testUserRegister($firstName, $lastName): void
-    {
-        /*
-         * 1. получение данных от пользователя (из запроса)
-         * 2. валидация данных (внутри фабрики сущности)
-         * 3. создание сущности по валидным данным (внутри фабрики сущности)
-         * 4. сохранение сущности в хранилище
-         * 4. получение сущности из хранилища
-         * 5. сопоставление ожидаемого и фактического результата
-         * Если на всех этапах не было выброшено исключение, а так же результаты сошлись, то тест пройден успешно.
-         * 6. почистить за собой в таблице
-         */
-        self::bootKernel();
-        $container = self::getContainer();
-        $userFactory = $container->get(UserFactory::class);
-
-        $user = $userFactory->createUser(new CreateUserDTO($firstName, $lastName));
-
-        $saveUserDTO = new SaveUserDTO($user->getFirstName(), $user->getLastName());
-
-        $dbManager = new DBManagerWithPDO();
-        $id = $dbManager->saveUser($saveUserDTO)->id;
-
-        $gotUserDTO = $dbManager->getUser(new GetUserDTO($id));
-
-        $this->assertEquals(
-            array($gotUserDTO->firstName, $gotUserDTO->lastName),
-            array($saveUserDTO->firstName, $saveUserDTO->lastName));
-
-        $dbManager->deleteUser(new DeleteUserDTO($id));
-    }
-
-    public function validUserRegistrationTestProvider(): array
-    {
-        return [
-            'when user is valid' =>
-                [
-                    'firstName' => 'Oleg',
-                    'lastName' => 'Petrov'
-                ]
-        ];
-    }
 
     /**
      * @dataProvider validUserRegistrationTestMethodProvider
