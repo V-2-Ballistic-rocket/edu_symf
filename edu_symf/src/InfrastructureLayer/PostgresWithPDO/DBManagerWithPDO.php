@@ -59,9 +59,9 @@ class DBManagerWithPDO implements StorageManagerInterface
     public function editUser(EditUserDTO $editUserDTO) : void
     {
         $DBH = $this->initDB();
-        $sth = $DBH->prepare("UPDATE product
+        $sth = $DBH->prepare("UPDATE users
             SET firstname = :firstname, lastname = :lastname
-            WHERE product_id = :id"
+            WHERE id = :id"
         );
         $sth->execute(
             ['firstname' => $editUserDTO->firstName, 'lastname' => $editUserDTO->lastName, 'id' => $editUserDTO->id]
