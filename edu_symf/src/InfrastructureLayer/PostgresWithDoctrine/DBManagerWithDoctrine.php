@@ -2,8 +2,7 @@
 
 namespace App\InfrastructureLayer\PostgresWithDoctrine;
 
-use App\DomainLayer\StorageManagerInterface;
-use App\Entity\Users;
+use App\InfrastructureLayer\Entity\Users;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\EditUserDTO;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;

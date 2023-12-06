@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
-use Composer\Util\Http\Response;
+use App\InfrastructureLayer\Entity\Users;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
