@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Validation;
 
 class UserRegistration
 {
-
     public function registrationUser(UserRegistrationDTO $userRegistrationDTO, StorageManagerInterface $storageManager) : Uuid
     {
         $userFactory = new UserFactory(Validation::createValidator());
