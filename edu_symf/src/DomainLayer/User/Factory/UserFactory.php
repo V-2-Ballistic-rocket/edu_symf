@@ -17,7 +17,6 @@ class UserFactory
 
     public function createUser(CreateUserDTO $createUserDTO) : ?User
     {
-
         $errors = $this->validator->validate($createUserDTO);
         if(count($errors) > 0){
             $errorString = (string) $errors;

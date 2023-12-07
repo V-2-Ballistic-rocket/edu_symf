@@ -25,6 +25,9 @@ class UserController extends AbstractController
     {
         $firstName = '';
         $lastName = '';
+
+        $validador = new ContainStringValidator();
+
         $entityManager = $doctrine->getManager();
         $userRegistration = new UserRegistration();
         try {
