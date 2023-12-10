@@ -20,7 +20,7 @@ final class Version20231204145028 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE users (id UUID NOT NULL, firstname VARCHAR(30) NOT NULL, lastname VARCHAR(30) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE users (id UUID NOT NULL, first_name VARCHAR(30) NOT NULL, last_name VARCHAR(30) NOT NULL, age INTEGER, email VARCHAR(255) NOT NULL, phone_number VARCHAR (15), PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN users.id IS \'(DC2Type:uuid)\'');
     }
 

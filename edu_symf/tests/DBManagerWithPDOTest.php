@@ -9,7 +9,7 @@ use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class DBManagerWithPDOTest extends KernelTestCase
+    class DBManagerWithPDOTest extends KernelTestCase
 {
     /**
      * @dataProvider saveUserProvider

@@ -18,7 +18,7 @@ class DBManagerWithPDO implements StorageManagerInterface
 
 
     private string $toSqlFilePath = './src/InfrastructureLayer/PostgresWithPDO/init.sql';
-    private string $connectionParams = 'pgsql:host=172.19.160.1;dbname=app';
+    private string $connectionParams = 'pgsql:host=postgres;dbname=app';
     private string $user = 'postgres';
     private string $password = 'postgres';
     private function initDB()
@@ -32,10 +32,18 @@ class DBManagerWithPDO implements StorageManagerInterface
     public function saveUser(SaveUserDTO $saveUserDTO) : SavedUserDTO
     {
         $DBH = $this->initDB();
-        $sth = $DBH->prepare("INSERT INTO users (id, firstName, lastName)
-        VALUES (:id, :firstname, :lastname);");
+        $sth = $DBH->prepare("INSERT INTO users (id, first_name, last_name, age, email, phone_number)
+        VALUES (:id, :first_name, :last_name, :age, :email, :phone_number);");
         $id = Uuid::v1();
-        $sth->execute(['id' => $id, 'firstname' => $saveUserDTO->firstName, 'lastname' => $saveUserDTO->lastName]);
+        $sth->execute(
+            [
+                'id' => $id,
+                'first_name' => $saveUserDTO->firstName,
+                'last_name' => $saveUserDTO->lastName,
+                'age' => $saveUserDTO->age,
+                'email' => $saveUserDTO->email,
+                'phone_number' => $saveUserDTO->phoneNumber
+        ]);
         return new SavedUserDTO($id);
     }
 
@@ -45,11 +53,17 @@ class DBManagerWithPDO implements StorageManagerInterface
             throw new \Exception('Пользователь не найден', 404);
         }
         $DBH = $this->initDB();
-        $sth = $DBH->prepare("SELECT firstname, lastname FROM users WHERE id = :id;");
+        $sth = $DBH->prepare("SELECT first_name, last_name, age, email, phone_number FROM users WHERE id = :id;");
         $sth->execute(['id' => $getUserDTO->id]);
         $result = $sth->fetch(PDO::PARAM_STR);
 
-        return new GotUserDTO($result['firstname'], $result['lastname']);
+        return new GotUserDTO(
+            $result['first_name'],
+            $result['last_name'],
+            $result['age'],
+            $result['email'],
+            $result['phone_number']
+        );
     }
 
     public function deleteUser(DeleteUserDTO  $deleteUserDTO) : void
