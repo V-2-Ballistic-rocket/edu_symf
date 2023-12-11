@@ -10,14 +10,14 @@ class User
     public string $lastName = "";
     public int $age = 0;
     public string $email = "";
-    public string $phoneNumber = "";
+    public ?string $phoneNumber = "";
     public function  __construct(CreateUserDTO $createUserDTO)
     {
         $this->firstName = $createUserDTO->firstName;
         $this->lastName = $createUserDTO->lastName;
         $this->age = $createUserDTO->age;
         $this->email = $createUserDTO->email;
-        $this->email = $createUserDTO->phoneNumber;
+        $this->phoneNumber = $createUserDTO->phoneNumber;
     }
 
     public function getLastName(): string
@@ -40,7 +40,7 @@ class User
         return $this->email;
     }
 
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }

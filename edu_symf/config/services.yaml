@@ -20,6 +20,10 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\src\common\Validator\ContainPhoneValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: phoneNumberValidator }
 
+        App\Validator\Constraints\ContainPhoneNumber: ~
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

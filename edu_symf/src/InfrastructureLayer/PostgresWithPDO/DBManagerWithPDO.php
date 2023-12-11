@@ -2,7 +2,7 @@
 
 namespace App\InfrastructureLayer\PostgresWithPDO;
 
-use App\DomainLayer\StorageManagerInterface;
+use App\DomainLayer\Storage\StorageManagerInterface;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\EditUserDTO;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;
@@ -77,11 +77,18 @@ class DBManagerWithPDO implements StorageManagerInterface
     {
         $DBH = $this->initDB();
         $sth = $DBH->prepare("UPDATE users
-            SET firstname = :firstname, lastname = :lastname
+            SET first_name = :first_name, last_name = :last_name, age = :age, email = :email, phone_number = :phone_number
             WHERE id = :id"
         );
         $sth->execute(
-            ['firstname' => $editUserDTO->firstName, 'lastname' => $editUserDTO->lastName, 'id' => $editUserDTO->id]
+            [
+                'first_name' => $editUserDTO->firstName,
+                'last_name' => $editUserDTO->lastName,
+                'age' => $editUserDTO->age,
+                'email' => $editUserDTO->email,
+                'phone_number' => $editUserDTO->phoneNumber,
+                'id' => $editUserDTO->id
+            ]
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DomainLayer;
+namespace App\DomainLayer\Storage;
 
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\EditUserDTO;

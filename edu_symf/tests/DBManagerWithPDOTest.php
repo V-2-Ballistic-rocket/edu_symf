@@ -14,15 +14,34 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
     /**
      * @dataProvider saveUserProvider
      */
-    public function testSaveUser($firstName, $lastName) : void
+    public function testSaveUser($firstName, $lastName, $age, $email, $phoneNumber) : void
     {
         $dbManager = new DBManagerWithPDO();
-        $savedUserDTO = $dbManager->saveUser(new SaveUserDTO($firstName, $lastName));
+        $savedUserDTO = $dbManager->saveUser(new SaveUserDTO(
+            $firstName,
+            $lastName,
+            $age,
+            $email,
+            $phoneNumber
+        ));
 
         $gotUserDTO = $dbManager->getUser(new GetUserDTO($savedUserDTO->id));
 
-        $this->assertEquals(array($firstName, $lastName), array($gotUserDTO->firstName, $gotUserDTO->lastName));
-
+        $this->assertEquals(
+            array(
+                $firstName,
+                $lastName,
+                $age,
+                $email,
+                $phoneNumber
+            ),
+            array(
+                $gotUserDTO->firstName,
+                $gotUserDTO->lastName,
+                $gotUserDTO->age,
+                $gotUserDTO->email,
+                $gotUserDTO->phoneNumber
+            ));
         $dbManager->deleteUser(new DeleteUserDTO($savedUserDTO->id));
     }
     public function saveUserProvider(): array
@@ -31,7 +50,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
             'when user is valid' =>
             [
                 'firstName' => 'Dmitriy',
-                'lastName' => 'Rus'
+                'lastName' => 'Rus',
+                'age' => 35,
+                'email' => 'v.mahoneko@mail.com',
+                'phoneNumber' => null
             ]
         ];
     }
@@ -39,17 +61,35 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
     /**
      * @dataProvider getUserProvider
      */
-    public function testGetUser($firstName, $lastName) : void
+    public function testGetUser($firstName, $lastName, $age, $email, $phoneNumber) : void
     {
         $dbManager = new DBManagerWithPDO();
-        $savedUserDTO = $dbManager->saveUser(new SaveUserDTO($firstName, $lastName));
+        $savedUserDTO = $dbManager->saveUser(new SaveUserDTO(
+            $firstName,
+            $lastName,
+            $age,
+            $email,
+            $phoneNumber
+        ));
 
         $gotUserDTO = $dbManager->getUser(new GetUserDTO($savedUserDTO->id));
 
         $this->assertEquals(
-            array($firstName, $lastName),
-            array($gotUserDTO->firstName, $gotUserDTO->lastName)
-        );
+            array(
+                $firstName,
+                $lastName,
+                $age,
+                $email,
+                $phoneNumber
+            ),
+            array(
+                $gotUserDTO->firstName,
+                $gotUserDTO->lastName,
+                $gotUserDTO->age,
+                $gotUserDTO->email,
+                $gotUserDTO->phoneNumber
+            ));
+
         $dbManager->deleteUser(new DeleteUserDTO($savedUserDTO->id));
     }
     public function getUserProvider(): array
@@ -58,7 +98,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
             'when user is valid' =>
             [
                 'firstName' => 'Oleg',
-                'lastName' => 'Keinz'
+                'lastName' => 'Keinz',
+                'age' => 35,
+                'email' => 'v.mahoneko@mail.com',
+                'phoneNumber' => null
             ]
         ];
     }
@@ -66,19 +109,42 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
     /**
      * @dataProvider editUserProvider
      */
-    public function testEditUser($newFirstName, $newLastName) : void
+    public function testEditUser($firstName, $lastName, $age, $email, $phoneNumber) : void
     {
         $dbManager = new DBManagerWithPDO();
-        $savedUserDTO = $dbManager->saveUser(new SaveUserDTO('old first name', 'old last name'));
+        $savedUserDTO = $dbManager->saveUser(new SaveUserDTO(
+            'old first name',
+            'old last name',
+            20,
+            'old.email@mail.com',
+            '88005553535'
+        ));
 
-        $dbManager->editUser(new EditUserDTO($newFirstName, $newLastName, $savedUserDTO->id));
+        $dbManager->editUser(new EditUserDTO(
+            $firstName,
+            $lastName,
+            $age,
+            $email,
+            $phoneNumber,
+            $savedUserDTO->id));
 
         $gotUserDTO = $dbManager->getUser(new GetUserDTO($savedUserDTO->id));
 
         $this->assertEquals(
-            array($newFirstName, $newLastName),
-            array($gotUserDTO->firstName, $gotUserDTO->lastName)
-        );
+            array(
+                $firstName,
+                $lastName,
+                $age,
+                $email,
+                $phoneNumber
+            ),
+            array(
+                $gotUserDTO->firstName,
+                $gotUserDTO->lastName,
+                $gotUserDTO->age,
+                $gotUserDTO->email,
+                $gotUserDTO->phoneNumber
+            ));
         $dbManager->deleteUser(new DeleteUserDTO($savedUserDTO->id));
     }
     public function editUserProvider(): array
@@ -87,7 +153,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
             'when user is valid' =>
             [
                 'newFirstName' => 'Filip',
-                'newLastName' => 'Kindred Dik'
+                'newLastName' => 'Kindred Dik',
+                'age' => 35,
+                'email' => 'v.mahoneko@mail.com',
+                'phoneNumber' => null
             ]
         ];
     }

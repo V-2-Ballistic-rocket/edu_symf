@@ -17,10 +17,28 @@ class UserFactoryTest extends KernelTestCase
         $container = self::getContainer();
         $userFactory = $container->get(UserFactory::class);
 
-        $expectedResult = array($firstName, 'Petrov');
+        $expectedResult = array(
+            $firstName,
+            'Petrov',
+            12,
+            'email@mail.com',
+            null
+        );
 
-        $user = $userFactory->createUser(new CreateUserDTO($firstName, 'Petrov'));
-        $actualResult = array($user->getFirstName(), $user->getLastName());
+        $user = $userFactory->createUser(new CreateUserDTO(
+            $firstName,
+            'Petrov',
+            12,
+            'email@mail.com',
+            null
+        ));
+        $actualResult = array(
+            $user->getFirstName(),
+            $user->getLastName(),
+            $user->getAge(),
+            $user->getEmail(),
+            $user->getPhoneNumber()
+        );
 
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -40,11 +58,28 @@ class UserFactoryTest extends KernelTestCase
     {
         self::bootKernel();
         $container = self::getContainer();
-
-        $expectedResult = array('Petr', $lastName);
+        $expectedResult = array(
+            'Petr',
+            $lastName,
+            12,
+            'email@mail.com',
+            '88005553535'
+        );
         $userFactory = $container->get(UserFactory::class);
-        $user = $userFactory->createUser(new CreateUserDTO('Petr', $lastName));
-        $actualResult = array($user->getFirstName(), $user->getLastName());
+        $user = $userFactory->createUser(new CreateUserDTO(
+            'Petr',
+            $lastName,
+            12,
+            'email@mail.com',
+            '88005553535'
+        ));
+        $actualResult = array(
+            $user->getFirstName(),
+            $user->getLastName(),
+            $user->getAge(),
+            $user->getEmail(),
+            $user->getPhoneNumber()
+        );
 
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -66,7 +101,13 @@ class UserFactoryTest extends KernelTestCase
         $container = self::getContainer();
         $userFactory = $container->get(UserFactory::class);
 
-        $actualResult = $userFactory->createUser(new CreateUserDTO($firstName, 'Petrov'));
+        $actualResult = $userFactory->createUser(new CreateUserDTO(
+            $firstName,
+            'Petrov',
+            12,
+            'email@mail.com',
+            null
+        ));
 
         $this->assertNull($actualResult);
     }
@@ -88,7 +129,13 @@ class UserFactoryTest extends KernelTestCase
         $container = self::getContainer();
         $userFactory = $container->get(UserFactory::class);
 
-        $actualResult = $userFactory->createUser(new CreateUserDTO('Petr', $lastName));
+        $actualResult = $userFactory->createUser(new CreateUserDTO(
+            'name',
+            $lastName,
+            12,
+            'email@mail.com',
+            null
+        ));
 
         $this->assertNull($actualResult);
     }

@@ -2,17 +2,17 @@
 
 namespace App\DomainLayer\User\Registration;
 
-use App\DomainLayer\StorageManagerInterface;
+use App\DomainLayer\Storage\StorageManagerInterface;
 use App\DomainLayer\User\Factory\UserFactory;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
 use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
+use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Validation;
 
 class UserRegistration
 {
-    public function registrationUser(UserRegistrationDTO $userRegistrationDTO, StorageManagerInterface $storageManager) : uuid
+    public function registrationUser(UserRegistrationDTO $userRegistrationDTO, StorageManagerInterface $storageManager) : SavedUserDTO
     {
         $userFactory = new UserFactory(Validation::createValidator());
         $user = $userFactory
@@ -33,6 +33,6 @@ class UserRegistration
             $user->getAge(),
             $user->getEmail(),
             $user->getPhoneNumber()
-        ))->id;
+        ));
     }
 }

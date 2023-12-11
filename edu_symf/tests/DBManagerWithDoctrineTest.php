@@ -18,24 +18,6 @@ use Symfony\Component\Uid\Uuid;
 
 class DBManagerWithDoctrineTest extends KernelTestCase
 {
-//    public function testGetUser(): void
-//    {
-//        $managerRegistry = $this->createMock(ManagerRegistry::class);
-//        $connection = $this->createMock(Connection::class);
-//        $entityManager = $this->createMock(EntityManagerInterface::class);
-//
-//        $managerRegistry->method('getManager')->willReturn($entityManager);
-//        $entityManager->method('getConnection')->willReturn($connection);
-//        $connection->expects($this->once())
-//            ->method('getWrappedConnection');
-//
-//        $dbManager = new DBManagerWithDoctrine($managerRegistry);
-//
-//        $gotUserDTO = $dbManager->getUser(new GetUserDTO(Uuid::v1()));
-//
-//        $this->assertInstanceOf(GetUserDTO::class, $gotUserDTO);
-//    }
-
     /**
      *@dataProvider saveUserProvider
      */
