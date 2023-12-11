@@ -23,9 +23,6 @@ class DBManagerWithPDO implements StorageManagerInterface
     private string $password = 'postgres';
     private function initDB()
     {
-
-        //$DBH->exec(file_get_contents($this->toSqlFilePath));
-
         return $DBH = new PDO($this->connectionParams, $this->user, $this->password);
     }
 

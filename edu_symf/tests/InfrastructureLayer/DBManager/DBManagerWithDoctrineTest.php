@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\InfrastructureLayer\DBManager;
 
 use App\InfrastructureLayer\PostgresWithDoctrine\DBManagerWithDoctrine;
 use App\InfrastructureLayer\PostgresWithPDO\DBManagerWithPDO;
@@ -8,13 +8,9 @@ use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Uid\Uuid;
 
 class DBManagerWithDoctrineTest extends KernelTestCase
 {
@@ -50,13 +46,13 @@ class DBManagerWithDoctrineTest extends KernelTestCase
     {
         return [
             'when valid data' =>
-            [
-                'firstName' => 'Vasiliy',
-                'lastName' => 'Mahonenko',
-                'age' => 35,
-                'email' => 'v.mahoneko@mail.com',
-                'phoneNumber' => null
-            ]
+                [
+                    'firstName' => 'Vasiliy',
+                    'lastName' => 'Mahonenko',
+                    'age' => 35,
+                    'email' => 'v.mahoneko@mail.com',
+                    'phoneNumber' => null
+                ]
         ];
     }
 

@@ -1,15 +1,15 @@
 <?php
 
 namespace App\DomainLayer\User\UserDTO;
-
 use App\common\Validators as CustomAssert;
 use Symfony\Component\Validator\Constraints as Assert;
+
 readonly class CreateUserDTO
 {
     public function __construct(
-        #[Assert\NotBlank]
+        #[CustomAssert\ContainProperName]
         public string  $firstName = "",
-        #[CustomAssert\ContainFio]
+        #[CustomAssert\ContainProperName]
         public string  $lastName = "",
         #[CustomAssert\ContainAge]
         public int     $age = 0,

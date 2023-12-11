@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Domain\User\Factory;
 
 use App\DomainLayer\User\Factory\UserFactory;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;

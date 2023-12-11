@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Domain\User\Registration;
 
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\UserRegistrationDTO;

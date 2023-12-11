@@ -4,7 +4,7 @@ namespace App\common\Validators;
 
 use Symfony\Component\Validator\Constraint;
 #[\Attribute]
-class ContainFio extends Constraint
+class ContainProperName extends Constraint
 {
     public $message = 'значение "{{ value }}" указано некорректно';
     #[HasNamedArguments]

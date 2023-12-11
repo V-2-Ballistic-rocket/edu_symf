@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\InfrastructureLayer\DBManager;
 
 use App\InfrastructureLayer\PostgresWithPDO\DBManagerWithPDO;
 use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
@@ -9,7 +9,7 @@ use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\SaveUserDTO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-    class DBManagerWithPDOTest extends KernelTestCase
+class DBManagerWithPDOTest extends KernelTestCase
 {
     /**
      * @dataProvider saveUserProvider
@@ -48,13 +48,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
     {
         return [
             'when user is valid' =>
-            [
-                'firstName' => 'Dmitriy',
-                'lastName' => 'Rus',
-                'age' => 35,
-                'email' => 'v.mahoneko@mail.com',
-                'phoneNumber' => null
-            ]
+                [
+                    'firstName' => 'Dmitriy',
+                    'lastName' => 'Rus',
+                    'age' => 35,
+                    'email' => 'v.mahoneko@mail.com',
+                    'phoneNumber' => null
+                ]
         ];
     }
 
@@ -96,13 +96,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
     {
         return [
             'when user is valid' =>
-            [
-                'firstName' => 'Oleg',
-                'lastName' => 'Keinz',
-                'age' => 35,
-                'email' => 'v.mahoneko@mail.com',
-                'phoneNumber' => null
-            ]
+                [
+                    'firstName' => 'Oleg',
+                    'lastName' => 'Keinz',
+                    'age' => 35,
+                    'email' => 'v.mahoneko@mail.com',
+                    'phoneNumber' => null
+                ]
         ];
     }
 
@@ -151,13 +151,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
     {
         return [
             'when user is valid' =>
-            [
-                'newFirstName' => 'Filip',
-                'newLastName' => 'Kindred Dik',
-                'age' => 35,
-                'email' => 'v.mahoneko@mail.com',
-                'phoneNumber' => null
-            ]
+                [
+                    'newFirstName' => 'Filip',
+                    'newLastName' => 'Kindred Dik',
+                    'age' => 35,
+                    'email' => 'v.mahoneko@mail.com',
+                    'phoneNumber' => null
+                ]
         ];
     }
 }
