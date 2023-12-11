@@ -20,8 +20,17 @@ class AddressFactoryTest extends TestCase
         $validator->expects($this->once())->method('validate');
         $address = $addressFactory = new AddressFactory($validator);
         $this->assertEquals(
-            array($country, $city, $street, $houseNumber),
-            array($address->get)
+            array(
+                $country,
+                $city,
+                $street,
+                $houseNumber
+            ),
+            array(
+                $address->getCountry(),
+                $address->getCity(),
+                $address->getStreet(),
+                $address->getHouseNumber())
         );
     }
     public function validDataProvider():array

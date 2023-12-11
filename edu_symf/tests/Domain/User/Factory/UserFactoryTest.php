@@ -109,7 +109,7 @@ class UserFactoryTest extends KernelTestCase
             null
         ));
 
-        $this->assertNull($actualResult);
+        $this->expectException();
     }
     public function invalidFirstNameProvider():array
     {
