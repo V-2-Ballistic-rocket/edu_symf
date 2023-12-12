@@ -12,14 +12,22 @@ class AddressFactoryTest extends TestCase
     /**
      * @dataProvider  validDataProvider
      */
-    public function testSomething($country, $city, $street, $houseNumber): void
+    public function testAddressFactory($country, $city, $street, $houseNumber): void
     {
         $createAddressDTO = new CreateAddressDTO($country, $city, $street, $houseNumber);
 
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->expects($this->once())->method('validate');
-        $address = $addressFactory = new AddressFactory($validator);
-        $this->assertEquals(
+        $addressFactory = new AddressFactory($validator);
+
+        $address = $addressFactory->CreateAddress(new CreateAddressDTO(
+            $country,
+            $city,
+            $street,
+            $houseNumber
+        ));
+
+            $this->assertEquals(
             array(
                 $country,
                 $city,

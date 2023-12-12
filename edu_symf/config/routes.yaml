@@ -1,5 +1,5 @@
 controllers:
     resource:
         path: ../src/Requester/Controller/
-        namespace: App\Controller
+        namespace: App\Requester\Controller
     type: attribute

@@ -4,7 +4,8 @@ namespace App\Requester\Controller;
 
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
-use App\InfrastructureLayer\PostgresWithDoctrine\DBManagerWithDoctrine;
+use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
+use App\Requester\MapRequestPayload\PostRequestPayloadMapper;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,27 +15,36 @@ use Symfony\Component\Uid\Uuid;
 
 class UserController extends AbstractController
 {
-/*
- * получение данных
- * валидация
- * сохранение
- * возврат id
- * */
-    #[Route('/user', name: 'create_user')]
+    public function __construct(
+        private PostRequestPayloadMapper $requestPayloadMapper
+    ){
+    }
+    #[Route('/users', name: 'create_user', methods: ["POST"])]
     public function createUser(Request $request, ManagerRegistry $doctrine) : JsonResponse
     {
-        $firstName = $request->query->get('first_name') ?? null;
-        $lastName = $request->query->get('last_name')?? null;
-        $age = $request->query->get('age')?? null;
-        $email = $request->query->get('email')?? null;
-        $phoneNumber = $request->query->get('phone_number')?? null;
+        $content = $request->getContent();
 
-        $entityManager = $doctrine->getManager();
+        $requestPayload = json_decode($content, true);
+
+        $mapping = $this->requestPayloadMapper->mapRequestPayload($requestPayload);
+        $firstName = $mapping['first_name'] ?? null;
+        $lastName = $mapping['last_name'] ?? null;
+        $age = $mapping['age'] ?? null;
+        $email = $mapping['email'] ?? null;
+        $phoneNumber = $mapping['phone_number'] ?? null;
+
         $userRegistration = new UserRegistration();
         try {
             $id = $userRegistration->registrationUser(
-                new UserRegistrationDTO($firstName, $lastName),
-                new DBManagerWithDoctrine($doctrine));
+                new UserRegistrationDTO(
+                    $firstName,
+                    $lastName,
+                    $age,
+                    $email,
+                    $phoneNumber
+                ),
+                new DBManagerWithDoctrine($doctrine))
+                ->id;
         } catch (\Exception $e) {
             return new JsonResponse(
                 $e->getMessage(),
@@ -42,7 +52,7 @@ class UserController extends AbstractController
             );
         }
         return new JsonResponse(
-            'Saved new user with id' . $id,
+            "Saved new user with id - {$id}",
             status: 200
         );
     }

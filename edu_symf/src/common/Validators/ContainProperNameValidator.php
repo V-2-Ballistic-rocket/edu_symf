@@ -14,11 +14,11 @@ class ContainProperNameValidator extends ConstraintValidator
      */
     public function validate(mixed $value, Constraint $constraint)
     {
-        if (!$constraint instanceof ContainPhoneNumber) {
-            throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
+        if (!$constraint instanceof ContainProperName) {
+            throw new UnexpectedTypeException($constraint, ContainProperName::class);
         }
         if (null === $value || '' === $value) {
-            throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
+            throw new UnexpectedTypeException($constraint, ContainProperName::class);
         }
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');

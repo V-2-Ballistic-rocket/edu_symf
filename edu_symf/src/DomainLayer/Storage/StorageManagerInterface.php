@@ -13,6 +13,5 @@ interface StorageManagerInterface
 {
     public function saveUser(SaveUserDTO $saveUserDTO) : SavedUserDTO;
     public function getUser(GetUserDTO $getUserDTO) : GotUserDTO;
-    public function deleteUser(DeleteUserDTO $deleteUserDTO) : void;
-    public function editUser(EditUserDTO $editUserDTO) : void;
+
 }

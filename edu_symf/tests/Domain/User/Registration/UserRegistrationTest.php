@@ -4,7 +4,7 @@ namespace App\Tests\Domain\User\Registration;
 
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
-use App\InfrastructureLayer\PostgresWithDoctrine\DBManagerWithDoctrine;
+use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
 use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

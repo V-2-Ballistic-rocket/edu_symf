@@ -14,18 +14,16 @@ class ContainAgeValidator extends ConstraintValidator
      */
     public function validate(mixed $value, Constraint $constraint)
     {
-        if (!$constraint instanceof ContainPhoneNumber) {
-            throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
+        if (!$constraint instanceof ContainAge) {
+            throw new UnexpectedTypeException($constraint, ContainAge::class);
         }
         if (null === $value || '' === $value) {
-            throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
+            throw new UnexpectedTypeException($constraint, ContainAge::class);
         }
         if (!is_numeric($value)){
-            throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
+            throw new UnexpectedTypeException($value, 'int');
         }
-        if (!is_string($value)) {
-            throw new UnexpectedTypeException($value, 'string');
-        }
+
         if(intval($value) > 120 || intval($value) < 0){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)

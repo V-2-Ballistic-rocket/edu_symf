@@ -12,7 +12,7 @@ class Users
 {
     #[ORM\Id]
     #[ORM\Column]
-    private ?Uuid $id = null;
+    private null|Uuid|string $id = null;
 
     #[ORM\Column(length: 30)]
     private ?string $first_name = null;
@@ -29,36 +29,55 @@ class Users
     #[ORM\Column(length: 15)]
     private ?string $phone_number = null;
 
-    public function getId(): ?Uuid
+    /**
+     * @param Uuid|null $id
+     * @param string|null $first_name
+     * @param string|null $last_name
+     * @param int|null $age
+     * @param string|null $email
+     * @param string|null $phone_number
+     */
+    public function __construct(null|Uuid|string $id = null, ?string $first_name = null, ?string $last_name = null, ?int $age = null, ?string $email = null, ?string $phone_number = null)
+    {
+        $this->id = $id;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->age = $age;
+        $this->email = $email;
+        $this->phone_number = $phone_number;
+    }
+
+
+    public function getId(): null|Uuid|string
     {
         return $this->id;
     }
 
-    public function setId(Uuid $id): static
+    public function setId(null|Uuid|string $id): static
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
-    public function setFirstname(string $first_name): static
+    public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
-    public function setLastname(string $last_name): static
+    public function setLastName(string $last_name): static
     {
         $this->last_name = $last_name;
 

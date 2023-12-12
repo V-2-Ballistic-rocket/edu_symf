@@ -3,8 +3,12 @@
 namespace App\Tests\Domain\User\Factory;
 
 use App\DomainLayer\User\Factory\UserFactory;
+use App\DomainLayer\User\User;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
+use Composer\Semver\Constraint\Constraint;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserFactoryTest extends KernelTestCase
 {
@@ -13,11 +17,7 @@ class UserFactoryTest extends KernelTestCase
      */
     public function testWhenFirstNameIsValid($firstName): void
     {
-        self::bootKernel();
-        $container = self::getContainer();
-        $userFactory = $container->get(UserFactory::class);
-
-        $expectedResult = array(
+        $createUserDTO = new CreateUserDTO(
             $firstName,
             'Petrov',
             12,
@@ -25,20 +25,18 @@ class UserFactoryTest extends KernelTestCase
             null
         );
 
-        $user = $userFactory->createUser(new CreateUserDTO(
-            $firstName,
-            'Petrov',
-            12,
-            'email@mail.com',
-            null
-        ));
-        $actualResult = array(
-            $user->getFirstName(),
-            $user->getLastName(),
-            $user->getAge(),
-            $user->getEmail(),
-            $user->getPhoneNumber()
-        );
+        $validatorMock = $this->createMock(ValidatorInterface::class);
+        $validatorMock->expects($this->once())
+            ->method('validate')
+            ->with($createUserDTO)
+            ->willReturn(new ConstraintViolationList());
+
+        $userFactory = new UserFactory($validatorMock);
+
+        $expectedResult = new User($createUserDTO);
+
+        $user = $userFactory->createUser($createUserDTO);
+        $actualResult = $user;
 
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -56,94 +54,35 @@ class UserFactoryTest extends KernelTestCase
      */
     public function testWhenLastNameIsValid($lastName): void
     {
-        self::bootKernel();
-        $container = self::getContainer();
-        $expectedResult = array(
-            'Petr',
+        $createUserDTO = new CreateUserDTO(
+            'petr',
             $lastName,
             12,
             'email@mail.com',
-            '88005553535'
+            null
         );
-        $userFactory = $container->get(UserFactory::class);
-        $user = $userFactory->createUser(new CreateUserDTO(
-            'Petr',
-            $lastName,
-            12,
-            'email@mail.com',
-            '88005553535'
-        ));
-        $actualResult = array(
-            $user->getFirstName(),
-            $user->getLastName(),
-            $user->getAge(),
-            $user->getEmail(),
-            $user->getPhoneNumber()
-        );
+
+        $validatorMock = $this->createMock(ValidatorInterface::class);
+        $validatorMock->expects($this->once())
+            ->method('validate')
+            ->with($createUserDTO)
+            ->willReturn(new ConstraintViolationList());
+
+        $userFactory = new UserFactory($validatorMock);
+
+        $expectedResult = new User($createUserDTO);
+
+        $user = $userFactory->createUser($createUserDTO);
+        $actualResult = $user;
 
         $this->assertEquals($expectedResult, $actualResult);
     }
+
     public function validUserLastNameProvider():array
     {
         return [
             'when last name is valid' => [
                 'Petrov'
-            ]
-        ];
-    }
-
-    /**
-     * @dataProvider invalidFirstNameProvider
-     */
-    public function testWhereFirstNameInvalid($firstName): void
-    {
-        self::bootKernel();
-        $container = self::getContainer();
-        $userFactory = $container->get(UserFactory::class);
-
-        $actualResult = $userFactory->createUser(new CreateUserDTO(
-            $firstName,
-            'Petrov',
-            12,
-            'email@mail.com',
-            null
-        ));
-
-        $this->expectException();
-    }
-    public function invalidFirstNameProvider():array
-    {
-        return [
-            'when first name is blank' => [
-                ''
-            ]
-        ];
-    }
-
-    /**
-     * @dataProvider invalidFirstNameProvider
-     */
-    public function testWhereLastNameInvalid($lastName): void
-    {
-        self::bootKernel();
-        $container = self::getContainer();
-        $userFactory = $container->get(UserFactory::class);
-
-        $actualResult = $userFactory->createUser(new CreateUserDTO(
-            'name',
-            $lastName,
-            12,
-            'email@mail.com',
-            null
-        ));
-
-        $this->assertNull($actualResult);
-    }
-    public function invalidLastNameProvider():array
-    {
-        return [
-            'when last name is blank' => [
-                ''
             ]
         ];
     }
