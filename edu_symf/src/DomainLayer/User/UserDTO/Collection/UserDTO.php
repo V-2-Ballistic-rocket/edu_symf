@@ -1,10 +1,10 @@
 <?php
 
-namespace App\InfrastructureLayer\UserDTO;
+namespace App\DomainLayer\User\UserDTO\Collection;
 
 use Symfony\Component\Uid\Uuid;
 
-readonly class GotUserDTO
+readonly class UserDTO
 {
     public function __construct(
         public ?Uuid $id = null,

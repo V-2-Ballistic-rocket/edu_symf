@@ -12,7 +12,10 @@ use Symfony\Component\Validator\Validation;
 
 class UserRegistration
 {
-    public function registrationUser(UserRegistrationDTO $userRegistrationDTO, StorageManagerInterface $storageManager) : SavedUserDTO
+    public function registrationUser(
+        UserRegistrationDTO $userRegistrationDTO,
+        StorageManagerInterface $storageManager
+    ) : SavedUserDTO
     {
         $userFactory = new UserFactory(Validation::createValidator());
         $user = $userFactory

@@ -3,7 +3,11 @@
 namespace App\InfrastructureLayer\Postgres;
 
 use App\DomainLayer\Storage\StorageManagerInterface;
+use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\InfrastructureLayer\Entity\Users;
+use App\InfrastructureLayer\UserDTO\DataMappers\EntityMapperToArray;
+use App\InfrastructureLayer\UserDTO\DataMappers\UserCollectionMapper;
+use App\InfrastructureLayer\UserDTO\DataMappers\UserEntityMapper;
 use App\InfrastructureLayer\UserDTO\GetUserDTO;
 use App\InfrastructureLayer\UserDTO\GotUserDTO;
 use App\InfrastructureLayer\UserDTO\SavedUserDTO;
@@ -14,8 +18,11 @@ use Symfony\Component\Uid\Uuid;
 class DBManagerWithDoctrine implements StorageManagerInterface
 {
     public function __construct(
-        private ManagerRegistry $registry
-    ){}
+        private ManagerRegistry $registry,
+        private UserCollectionMapper $collectionMapper,
+        private UserEntityMapper $entityMapper
+    )
+    {}
     public function saveUser(SaveUserDTO $saveUserDTO): SavedUserDTO
     {
         $entityManager = $this->registry->getManagerForClass(Users::class);
@@ -67,5 +74,16 @@ class DBManagerWithDoctrine implements StorageManagerInterface
 //            $result['email'],
 //            $result['phone_number']
 //        );
+    }
+
+    public function getUsers(): UserDtoCollection
+    {
+        $entityManager = $this->registry->getManagerForClass(Users::class);
+        $userRepository = $entityManager->getRepository(Users::class);
+        $users = $userRepository->findAll();
+        $data = $this->entityMapper->mapToArray($users);
+
+        $userDTOCollection = $this->collectionMapper->mapFromArray($data);
+        return $userDTOCollection;
     }
 }

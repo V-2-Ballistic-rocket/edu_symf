@@ -105,4 +105,8 @@ class DBManagerWithDoctrineTest extends KernelTestCase
                 ]
         ];
     }
+
+    public function testAddUser(){
+
+    }
 }
