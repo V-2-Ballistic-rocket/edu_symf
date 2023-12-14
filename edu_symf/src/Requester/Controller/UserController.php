@@ -28,6 +28,7 @@ class UserController extends AbstractController
         #[ValueResolver('user_registration_request_dto')] UserRegistrationRequestDTO $dto,
     ) : JsonResponse
     {
+
         $userRegistrationDTO = new UserRegistrationDTO(
             $dto->firstName,
             $dto->lastName,

@@ -4,12 +4,14 @@ namespace App\Requester\MapRequestPayload;
 
 use App\Requester\Controller\DTO\UserRegistrationRequestDTO;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\AsTargetedValueResolver;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 #[AsTargetedValueResolver('user_registration_request_dto')]
-class PostRequestPayloadMapper
+class PostRequestPayloadMapper implements ValueResolverInterface
 {
-    public function mapRequestPayload(Request $request, ArgumentMetadata $argument): iterable
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         if(!$argument->getType()){
             return [];
