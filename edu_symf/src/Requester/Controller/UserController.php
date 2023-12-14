@@ -30,11 +30,18 @@ class UserController extends AbstractController
     {
 
         $userRegistrationDTO = new UserRegistrationDTO(
+            $dto->login,
+            $dto->password,
+            $dto->email,
+            $dto->phoneNumber,
             $dto->firstName,
             $dto->lastName,
             $dto->age,
-            $dto->email,
-            $dto->phoneNumber
+            $dto->pathToAvatar,
+            $dto->country,
+            $dto->city,
+            $dto->street,
+            $dto->houseNumber
         );
         try {
             $id = $this->userRegistration

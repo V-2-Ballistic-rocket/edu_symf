@@ -4,10 +4,10 @@ namespace App\Tests\InfrastructureLayer\DBManager;
 use App\InfrastructureLayer\Entity\Users;
 use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
 use App\InfrastructureLayer\Repository\UsersRepository;
-use App\InfrastructureLayer\UserDTO\GetUserDTO;
-use App\InfrastructureLayer\UserDTO\GotUserDTO;
-use App\InfrastructureLayer\UserDTO\SavedUserDTO;
-use App\InfrastructureLayer\UserDTO\SaveUserDTO;
+use App\InfrastructureLayer\User\DTO\GetUserDTO;
+use App\InfrastructureLayer\User\DTO\GotUserDTO;
+use App\InfrastructureLayer\User\DTO\SavedUserDTO;
+use App\InfrastructureLayer\User\DTO\PostUserDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -20,7 +20,7 @@ class DBManagerWithDoctrineTest extends KernelTestCase
      */
     public function testSaveUser($firstName, $lastName, $age, $email, $phoneNumber): void
     {
-        $saveUserDTO = new SaveUserDTO(
+        $saveUserDTO = new PostUserDTO(
             $firstName,
             $lastName,
             $age,
@@ -64,8 +64,8 @@ class DBManagerWithDoctrineTest extends KernelTestCase
     {
         $getUserDTO = new GetUserDTO($id);
         $user = new Users();
-        $user->setFirstName('John');
-        $user->setLastName('Doe12332');
+        $user->setLogin('John');
+        $user->setPassword('Doe12332');
         $user->setAge(25);
         $user->setEmail('johndoe@example.com');
         $user->setPhoneNumber('1234567890');

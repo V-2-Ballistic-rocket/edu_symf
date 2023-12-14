@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\UserDTO\DataMappers;
+namespace App\InfrastructureLayer\User\DataMappers;
 
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;

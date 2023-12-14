@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\UserDTO\DataMappers;
+namespace App\InfrastructureLayer\User\DataMappers;
 
 use Symfony\Component\Uid\Uuid;
 

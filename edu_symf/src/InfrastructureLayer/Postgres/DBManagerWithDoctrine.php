@@ -2,16 +2,19 @@
 
 namespace App\InfrastructureLayer\Postgres;
 
+use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\Storage\StorageManagerInterface;
+use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
+use App\DomainLayer\User\UserDTO\SaveUserDTO;
+use App\InfrastructureLayer\Entity\Address;
+use App\InfrastructureLayer\Entity\Profile;
 use App\InfrastructureLayer\Entity\Users;
-use App\InfrastructureLayer\UserDTO\DataMappers\EntityMapperToArray;
-use App\InfrastructureLayer\UserDTO\DataMappers\UserCollectionMapper;
-use App\InfrastructureLayer\UserDTO\DataMappers\UserEntityMapper;
-use App\InfrastructureLayer\UserDTO\GetUserDTO;
-use App\InfrastructureLayer\UserDTO\GotUserDTO;
-use App\InfrastructureLayer\UserDTO\SavedUserDTO;
-use App\InfrastructureLayer\UserDTO\SaveUserDTO;
+use App\InfrastructureLayer\User\DataMappers\UserCollectionMapper;
+use App\InfrastructureLayer\User\DataMappers\UserEntityMapper;
+use App\InfrastructureLayer\User\DTO\GetUserDTO;
+use App\InfrastructureLayer\User\DTO\GotUserDTO;
+use App\InfrastructureLayer\User\DTO\SavedUserDTO;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -25,21 +28,66 @@ class DBManagerWithDoctrine implements StorageManagerInterface
     {}
     public function saveUser(SaveUserDTO $saveUserDTO): SavedUserDTO
     {
+
         $entityManager = $this->registry->getManagerForClass(Users::class);
 
-        $user = new Users();
-        $user->setFirstname($saveUserDTO->firstName);
-        $user->setLastname($saveUserDTO->lastName);
-        $user->setAge($saveUserDTO->age);
-        $user->setEmail($saveUserDTO->email);
-        $user->setPhoneNumber($saveUserDTO->phoneNumber);
+        $addressId = $this->saveAddress($saveUserDTO->saveAddressDTO);
+
+        $profileId = $this->saveProfile($saveUserDTO->saveProfileDTO);
+
         $id = Uuid::v1();
-        $user->setId($id);
+
+        $user = new Users(
+            $id,
+            $saveUserDTO->login,
+            $saveUserDTO->password,
+            $saveUserDTO->email,
+            $saveUserDTO->phoneNumber,
+            $addressId,
+            $profileId
+        );
+
 
         $entityManager->persist($user);
         $entityManager->flush();
 
         return new SavedUserDTO($id);
+    }
+
+    public function saveAddress(SaveAddressDTO $saveAddressDTO): Uuid
+    {
+
+        $entityManager = $this->registry->getManagerForClass(Address::class);
+
+        $id = Uuid::v1();
+        $address = new Address();
+        $address->setId($id);
+        $address->setCountry($saveAddressDTO->country);
+        $address->setCity($saveAddressDTO->city);
+        $address->setStreet($saveAddressDTO->street);
+        $address->setHouseNumber($saveAddressDTO->houseNumber);
+
+        $entityManager->persist($address);
+        $entityManager->flush();
+
+        return $id;
+    }
+
+    public function saveProfile(SaveProfileDTO $saveProfileDTO): Uuid
+    {
+        $entityManager = $this->registry->getManagerForClass(Profile::class);
+        $id = Uuid::v1();
+        $profile = new Profile(
+            $id,
+            $saveProfileDTO->firstName,
+            $saveProfileDTO->lastName,
+            $saveProfileDTO->age,
+            $saveProfileDTO->avatar->getPathToFile()
+        );
+        $entityManager->persist($profile);
+        $entityManager->flush();
+
+        return $id;
     }
 
     public function getUser(GetUserDTO $getUserDTO): GotUserDTO
@@ -50,8 +98,8 @@ class DBManagerWithDoctrine implements StorageManagerInterface
         $user = $userRepository->find($getUserDTO->id);
 
         return new GotUserDTO(
-            $user->getFirstName(),
-            $user->getLastName(),
+            $user->getLogin(),
+            $user->getPassword(),
             $user->getAge(),
             $user->getEmail(),
             $user->getPhoneNumber()
