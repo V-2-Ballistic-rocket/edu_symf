@@ -5,6 +5,7 @@ namespace App\InfrastructureLayer\Postgres;
 use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\Storage\StorageManagerInterface;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
+use App\DomainLayer\User\Registration\SavedUserDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\DomainLayer\User\UserDTO\SaveUserDTO;
 use App\InfrastructureLayer\Entity\Address;
@@ -14,7 +15,6 @@ use App\InfrastructureLayer\User\DataMappers\UserCollectionMapper;
 use App\InfrastructureLayer\User\DataMappers\UserEntityMapper;
 use App\InfrastructureLayer\User\DTO\GetUserDTO;
 use App\InfrastructureLayer\User\DTO\GotUserDTO;
-use App\InfrastructureLayer\User\DTO\SavedUserDTO;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -46,11 +46,13 @@ class DBManagerWithDoctrine implements StorageManagerInterface
             $addressId,
             $profileId
         );
-
-
         $entityManager->persist($user);
-        $entityManager->flush();
-
+        try {
+            $entityManager->flush();
+        } catch (\Exception $e)
+        {
+            dd($e->getMessage(), $e->getCode(), $e->getTraceAsString());
+        }
         return new SavedUserDTO($id);
     }
 

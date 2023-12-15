@@ -2,10 +2,10 @@
 
 namespace App\DomainLayer\Storage;
 
+use App\DomainLayer\User\Registration\SavedUserDTO;
 use App\DomainLayer\User\UserDTO\SaveUserDTO;
 use App\InfrastructureLayer\User\DTO\GetUserDTO;
 use App\InfrastructureLayer\User\DTO\GotUserDTO;
-use App\InfrastructureLayer\User\DTO\SavedUserDTO;
 
 interface StorageManagerInterface
 {

@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Tests\InfrastructureLayer\DBManager;
+use App\DomainLayer\User\Registration\SavedUserDTO;
 use App\InfrastructureLayer\Entity\Users;
 use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
 use App\InfrastructureLayer\Repository\UsersRepository;
 use App\InfrastructureLayer\User\DTO\GetUserDTO;
 use App\InfrastructureLayer\User\DTO\GotUserDTO;
-use App\InfrastructureLayer\User\DTO\SavedUserDTO;
 use App\InfrastructureLayer\User\DTO\PostUserDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
