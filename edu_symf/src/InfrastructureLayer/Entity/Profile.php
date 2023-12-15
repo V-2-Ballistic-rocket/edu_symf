@@ -11,7 +11,7 @@ class Profile
 {
     #[ORM\Id]
     #[ORM\Column]
-    private ?Uuid $id = null;
+    private null|string|Uuid $id = null;
 
     #[ORM\Column(length: 30)]
     private ?string $first_name = null;
@@ -26,7 +26,7 @@ class Profile
     private ?string $to_avatar_path = null;
 
     public function __construct(
-        ?Uuid $id = null,
+        null|string|Uuid $id = null,
         string $first_name = '',
         string $last_name = '',
         int $age = 0,
@@ -40,12 +40,12 @@ class Profile
         $this->to_avatar_path = $to_avatar_path;
     }
 
-    public function getId(): ?Uuid
+    public function getId(): null|string|Uuid
     {
         return $this->id;
     }
 
-    public function setId(?Uuid $id): static
+    public function setId(null|string|Uuid $id): static
     {
         $this->id = $id;
 

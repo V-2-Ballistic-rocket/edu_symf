@@ -130,10 +130,25 @@ class DBManagerWithDoctrine implements StorageManagerInterface
     {
         $entityManager = $this->registry->getManagerForClass(Users::class);
         $userRepository = $entityManager->getRepository(Users::class);
-        $users = $userRepository->findAll();
-        $data = $this->entityMapper->mapToArray($users);
 
-        $userDTOCollection = $this->collectionMapper->mapFromArray($data);
-        return $userDTOCollection;
+        $users = $userRepository->findAll();
+        $address = $this->getAllAddress();
+        $profiles = $this->getAllProfiles();
+
+        $data = $this->entityMapper->mapToArray($users, $profiles, $address);
+
+        return $this->collectionMapper->mapFromArray($data);
+    }
+
+    public function getAllAddress(): array
+    {
+        $addressRepository = $this->registry->getRepository(Address::class);
+        return  $addressRepository->findAll();
+    }
+
+    public function getAllProfiles(): array
+    {
+        $profileRepository = $this->registry->getRepository(Profile::class);
+        return  $profileRepository->findAll();
     }
 }

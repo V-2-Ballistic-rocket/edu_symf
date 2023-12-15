@@ -11,7 +11,7 @@ class Users
 {
     #[ORM\Id]
     #[ORM\Column]
-    private null|Uuid $id = null;
+    private null|Uuid|string $id = null;
 
     #[ORM\Column(length: 30)]
     private ?string $login = null;
@@ -32,7 +32,7 @@ class Users
     private null|Uuid $profileId;
 
     /**
-     * @param Uuid|null $id
+     * @param Uuid|null|string $id
      * @param string|null $login
      * @param string|null $password
      * @param string|null $email
@@ -41,7 +41,7 @@ class Users
      * @param null|Uuid $profileId
      */
     public function __construct(
-        null|Uuid $id = null,
+        null|Uuid|string $id = null,
         ?string $login = null,
         ?string $password = null,
         ?string $email = null,
@@ -59,12 +59,12 @@ class Users
         $this->profileId = $profileId;
     }
 
-    public function getId(): null|Uuid
+    public function getId(): null|Uuid|string
     {
         return $this->id;
     }
 
-    public function setId(null|Uuid $id): static
+    public function setId(null|Uuid|string $id): static
     {
         $this->id = $id;
 

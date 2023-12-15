@@ -11,7 +11,7 @@ class Address
 {
     #[ORM\Id]
     #[ORM\Column]
-    private ?Uuid $id = null;
+    private null|string|Uuid $id = null;
 
     #[ORM\Column(length: 50)]
     private ?string $country = null;
@@ -26,7 +26,7 @@ class Address
     private ?string $house_number = null;
 
     public function __construct(
-        ?Uuid $id = null,
+        null|string|Uuid $id = null,
         string $country = '',
         string $city = '',
         string $street = '',
@@ -35,12 +35,12 @@ class Address
     {
     }
 
-    public function getId(): ?Uuid
+    public function getId(): null|string|Uuid
     {
         return $this->id;
     }
 
-    public function setId(Uuid $id): static
+    public function setId(null|string|Uuid $id): static
     {
         $this->id = $id;
 

@@ -2,11 +2,11 @@
 
 namespace App\InfrastructureLayer\User\DataMappers;
 
+use App\DomainLayer\Address\AddressDTO\AddressDTO;
+use App\DomainLayer\User\Profile\DTO\ProfileDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\DomainLayer\User\UserDTO\Collection\UserDTO;
-use App\Requester\Controller\UserController;
-use Symfony\Component\Uid\Uuid;
 
 class UserCollectionMapper implements UserCollectionDtoMapperInterface
 {
@@ -16,32 +16,56 @@ class UserCollectionMapper implements UserCollectionDtoMapperInterface
         foreach ($data as $key => $user){
             $collection[] = new UserDTO(
                 $user['id'],
-                $user['first_name'],
-                $user['last_name'],
-                $user['age'],
+                $user['login'],
+                $user['password'],
                 $user['email'],
-                $user['phone_number']
+                $user['phone_number'],
+                new ProfileDTO(
+                    $user['profile']['id'],
+                    $user['profile']['first_name'],
+                    $user['profile']['last_name'],
+                    $user['profile']['age'],
+                    $user['profile']['to_avatar_path']
+                ),
+                new AddressDTO(
+                    $user['address']['id'],
+                    $user['address']['country'],
+                    $user['address']['city'],
+                    $user['address']['street'],
+                    $user['address']['house_number']
+                )
             );
         }
         return $collection;
     }
 
-
-
-    public function mapToArray(UserDtoCollection $collectionDTO): array
+    public function mapToArray(UserDtoCollection $userDtoCollection): array
     {
         $collection = [];
 
-        foreach ($collectionDTO as $key => $user)
+        foreach ($userDtoCollection as $key => $user)
         {
             $collection[] = [
                 'id' => $user->id,
-                'first_name' => $user->firstName,
-                'last_mame' => $user->lastName,
-                'age' => $user->age,
+                'login' => $user->login,
+                'password' => $user->password,
                 'email' => $user->email,
-                'phone_number' => $user->phoneNumber
-                ];
+                'phone_number' => $user->phoneNumber,
+                'profile' => [
+                    $user->profile->id,
+                    $user->profile->firstName,
+                    $user->profile->lastName,
+                    $user->profile->age,
+                    $user->profile->toAvatarPath
+                ],
+                'address' => [
+                    $user->address->id,
+                    $user->address->country,
+                    $user->address->city,
+                    $user->address->street,
+                    $user->address->houseNumber
+                ]
+            ];
         }
         return $collection;
     }
