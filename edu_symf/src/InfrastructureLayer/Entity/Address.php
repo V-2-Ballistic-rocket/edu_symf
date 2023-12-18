@@ -27,12 +27,17 @@ class Address
 
     public function __construct(
         null|string|Uuid $id = null,
-        string $country = '',
-        string $city = '',
-        string $street = '',
-        string $house_number = ''
+        ?string $country = '',
+        ?string $city = '',
+        ?string $street = '',
+        ?string $house_number = ''
     )
     {
+        $this->id = $id;
+        $this->country = $country;
+        $this->city = $city;
+        $this->street = $street;
+        $this->house_number = $house_number;
     }
 
     public function getId(): null|string|Uuid

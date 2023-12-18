@@ -26,10 +26,10 @@ class Users
     private ?string $phone_number = null;
 
     #[ORM\Column(name: "address_id", type: "uuid", nullable: true)]
-    private null|Uuid $addressId;
+    private null|Uuid|string $addressId;
 
     #[ORM\Column(name: "profile_id", type: "uuid", nullable: true)]
-    private null|Uuid $profileId;
+    private null|Uuid|string $profileId;
 
     /**
      * @param Uuid|null|string $id
@@ -46,8 +46,8 @@ class Users
         ?string $password = null,
         ?string $email = null,
         ?string $phone_number = null,
-        null|Uuid $addressId = null,
-        null|Uuid $profileId = null
+        null|Uuid|string $addressId = null,
+        null|Uuid|string $profileId = null
     )
     {
         $this->id = $id;
@@ -119,14 +119,14 @@ class Users
         return $this;
     }
 
-    public function setAddressId(null|Uuid $addressId): static
+    public function setAddressId(null|Uuid|string $addressId): static
     {
         $this->addressId = $addressId;
 
         return $this;
     }
 
-    public function setProfileId(null|Uuid $profileId): static
+    public function setProfileId(null|Uuid|string $profileId): static
     {
         $this->profileId = $profileId;
 
@@ -134,14 +134,14 @@ class Users
     }
 
     #[ORM\JoinColumn(name: "address_id", referencedColumnName: "id")]
-    public function getAddressId(): null|Uuid
+    public function getAddressId(): null|Uuid|string
     {
         return $this->addressId;
 
     }
 
     #[ORM\JoinColumn(name: "profile_id", referencedColumnName: "id")]
-    public function getProfileId(): null|Uuid
+    public function getProfileId(): null|Uuid|string
     {
         return $this->profileId;
     }

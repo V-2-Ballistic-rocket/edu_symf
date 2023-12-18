@@ -2,12 +2,14 @@
 
 namespace App\Tests\InfrastructureLayer\DBManager;
 use App\DomainLayer\User\Registration\SavedUserDTO;
+use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\InfrastructureLayer\Entity\Users;
 use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
 use App\InfrastructureLayer\Repository\UsersRepository;
+use App\InfrastructureLayer\User\DataMappers\UserCollectionMapper;
+use App\InfrastructureLayer\User\DataMappers\UserEntityMapper;
 use App\InfrastructureLayer\User\DTO\GetUserDTO;
 use App\InfrastructureLayer\User\DTO\GotUserDTO;
-use App\InfrastructureLayer\User\DTO\PostUserDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -106,7 +108,48 @@ class DBManagerWithDoctrineTest extends KernelTestCase
         ];
     }
 
-    public function testAddUser(){
+    public function testGetUsers()
+    {
+        // Создание моков и настройка зависимостей
+        $entityManager = $this->createMock(ManagerRegistry::class);
+        $userRepository = $this->createMock(UsersRepository::class);
+        $entityMapper = $this->createMock(UserEntityMapper::class);
+        $collectionMapper = $this->createMock(UserCollectionMapper::class);
 
+        // Задание ожидаемых вызовов и возвращаемых значений для моков
+        $users = [new Users(), new Users()]; // Пример данных пользователей
+        $address = []; // Пример данных адресов
+        $profiles = []; // Пример данных профилей
+        $data = []; // Пример результата отображения сущностей в массив
+        $userDtoCollection = new UserDtoCollection(); // Пример результата отображения массива в коллекцию DTO
+
+        $entityManager->expects($this->once())
+            ->method('getManagerForClass')
+            ->willReturn($entityManager);
+
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->willReturn($userRepository);
+
+        $userRepository->expects($this->once())
+            ->method('findAll')
+            ->willReturn($users);
+
+        $entityMapper->expects($this->once())
+            ->method('mapToArray')
+            ->with($users, $profiles, $address)
+            ->willReturn($data);
+
+        $collectionMapper->expects($this->once())
+            ->method('mapFromArray')
+            ->with($data)
+            ->willReturn($userDtoCollection);
+
+        // Создание объекта сервиса и вызов тестируемого метода
+        $userService = new DBManagerWithDoctrine($entityManager, $collectionMapper, $entityMapper);
+        $result = $userService->getUsers();
+
+        // Проверка результата
+        $this->assertInstanceOf(UserDtoCollection::class, $result);
     }
 }

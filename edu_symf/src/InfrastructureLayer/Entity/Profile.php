@@ -27,10 +27,10 @@ class Profile
 
     public function __construct(
         null|string|Uuid $id = null,
-        string $first_name = '',
-        string $last_name = '',
-        int $age = 0,
-        string $to_avatar_path = ''
+        ?string $first_name = '',
+        ?string $last_name = '',
+        ?int $age = 0,
+        ?string $to_avatar_path = ''
     )
     {
         $this->id = $id;
