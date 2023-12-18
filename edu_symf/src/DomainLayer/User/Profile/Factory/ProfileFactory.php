@@ -1,9 +1,10 @@
 <?php
 
-namespace App\DomainLayer\User\Profile;
+namespace App\DomainLayer\User\Profile\Factory;
 
 use App\DomainLayer\User\Profile\Avatar\Avatar;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
+use App\DomainLayer\User\Profile\Profile;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProfileFactory
@@ -23,7 +24,7 @@ class ProfileFactory
             $createProfileDTO->firstName,
             $createProfileDTO->lastName,
             $createProfileDTO->age,
-            new Avatar()
+            new Avatar($createProfileDTO->toAvatarPath)
         );
     }
 }
