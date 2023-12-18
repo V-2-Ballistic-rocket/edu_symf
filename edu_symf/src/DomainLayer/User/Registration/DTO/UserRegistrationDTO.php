@@ -1,6 +1,8 @@
 <?php
 
-namespace App\DomainLayer\User\UserDTO;
+namespace App\DomainLayer\User\Registration\DTO;
+
+use Symfony\Component\Uid\Uuid;
 
 readonly class UserRegistrationDTO
 {
@@ -16,7 +18,8 @@ readonly class UserRegistrationDTO
         public string $country = '',
         public string $city = '',
         public string $street = '',
-        public string $houseNumber = ''
+        public string $houseNumber = '',
+        public null|string|Uuid $id = null
     )
     {}
 }

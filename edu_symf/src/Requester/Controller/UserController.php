@@ -2,9 +2,9 @@
 
 namespace App\Requester\Controller;
 
+use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
-use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
 use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
 use App\Requester\Controller\DTO\UserRegistrationRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

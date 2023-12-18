@@ -9,9 +9,9 @@ use App\DomainLayer\User\Factory\UserFactory;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
 use App\DomainLayer\User\UserDTO\SaveUserDTO;
-use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
 use Symfony\Component\Validator\Validation;
 
 class UserRegistration
@@ -39,7 +39,8 @@ class UserRegistration
                     $userRegistrationDTO->city,
                     $userRegistrationDTO->street,
                     $userRegistrationDTO->houseNumber
-                )
+                ),
+                $userRegistrationDTO->id,
             ));
         if(!$user)
         {
