@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DomainLayer\User\Registration;
+namespace App\DomainLayer\User\Registration\DTO;
 
 use Symfony\Component\Uid\Uuid;
 

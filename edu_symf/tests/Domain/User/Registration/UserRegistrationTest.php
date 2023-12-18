@@ -2,7 +2,7 @@
 
 namespace App\Tests\Domain\User\Registration;
 
-use App\DomainLayer\User\Registration\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
 use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;

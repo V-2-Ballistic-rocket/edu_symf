@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Tests\InfrastructureLayer\DBManager;
-use App\DomainLayer\User\Registration\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\InfrastructureLayer\Entity\Users;
 use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;

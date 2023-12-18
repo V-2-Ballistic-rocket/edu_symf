@@ -4,6 +4,7 @@ namespace App\DomainLayer\User\UserDTO;
 use App\common\Validators as CustomAssert;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 readonly class CreateUserDTO
@@ -16,7 +17,8 @@ readonly class CreateUserDTO
         #[CustomAssert\ContainPhoneNumber]
         public ?string $phoneNumber = '',
         public ?CreateProfileDTO $createProfileDTO = null,
-        public ?CreateAddressDTO $createAddressDTO = null
+        public ?CreateAddressDTO $createAddressDTO = null,
+        public null|string|Uuid $id = null,
     )
     {
     }

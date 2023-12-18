@@ -10,7 +10,7 @@ use Symfony\Component\Uid\Uuid;
 class User
 {
     public function  __construct(
-        private ?Uuid $id = null,
+        private null|string|Uuid $id = null,
         private string $login = '',
         private string $password = '',
         private string $email = '',
