@@ -5,7 +5,7 @@ namespace App\Requester\Controller;
 use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
-use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
+use App\InfrastructureLayer\Postgres\DbManager;
 use App\Requester\Controller\DTO\UserRegistrationRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,9 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private DBManagerWithDoctrine $dbManager,
+        private DbManager                        $dbManager,
         private UserCollectionDtoMapperInterface $userCollectionDtoMapper,
-        private UserRegistration $userRegistration
+        private UserRegistration                 $userRegistration
     ){
     }
 

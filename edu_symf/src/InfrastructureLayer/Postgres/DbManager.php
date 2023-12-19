@@ -16,7 +16,7 @@ use App\InfrastructureLayer\User\DataMappers\UserEntityMapper;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
-class DBManagerWithDoctrine implements StorageManagerInterface
+class DbManager implements StorageManagerInterface
 {
     public function __construct(
         private ManagerRegistry $registry,

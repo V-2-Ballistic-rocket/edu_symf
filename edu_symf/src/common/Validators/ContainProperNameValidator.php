@@ -12,7 +12,7 @@ class ContainProperNameValidator extends ConstraintValidator
     /**
      * @inheritDoc
      */
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof ContainProperName) {
             throw new UnexpectedTypeException($constraint, ContainProperName::class);

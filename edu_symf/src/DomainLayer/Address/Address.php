@@ -10,12 +10,12 @@ class Address
     private string $city = '';
     private string $street = '';
     private string $houseNumber = '';
-    public function __construct(CreateAddressDTO $createAddressDTO)
+    public function __construct(?CreateAddressDTO $createAddressDTO = null)
     {
-        $this->country = $createAddressDTO->country;
-        $this->city = $createAddressDTO->city;
-        $this->street = $createAddressDTO->street;
-        $this->houseNumber = $createAddressDTO->houseNumber;
+        $this->country = $createAddressDTO->country ?? '';
+        $this->city = $createAddressDTO->city ?? '';
+        $this->street = $createAddressDTO->street ?? '';
+        $this->houseNumber = $createAddressDTO->houseNumber ?? '';
     }
 
     public function getCountry(): string

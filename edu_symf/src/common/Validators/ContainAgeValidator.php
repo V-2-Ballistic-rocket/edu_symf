@@ -12,7 +12,7 @@ class ContainAgeValidator extends ConstraintValidator
     /**
      * @inheritDoc
      */
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof ContainAge) {
             throw new UnexpectedTypeException($constraint, ContainAge::class);
