@@ -4,7 +4,6 @@ namespace App\InfrastructureLayer\Entity;
 
 use App\InfrastructureLayer\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
-use http\Message;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
@@ -15,13 +14,10 @@ class Users
     private null|Uuid|string $id = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $first_name = null;
+    private ?string $login = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $last_name = null;
-
-    #[ORM\Column]
-    private ?int $age = null;
+    private ?string $password = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
@@ -29,24 +25,39 @@ class Users
     #[ORM\Column(length: 15)]
     private ?string $phone_number = null;
 
+    #[ORM\Column(name: "address_id", type: "uuid", nullable: true)]
+    private null|Uuid|string $addressId;
+
+    #[ORM\Column(name: "profile_id", type: "uuid", nullable: true)]
+    private null|Uuid|string $profileId;
+
     /**
-     * @param Uuid|null $id
-     * @param string|null $first_name
-     * @param string|null $last_name
-     * @param int|null $age
+     * @param Uuid|null|string $id
+     * @param string|null $login
+     * @param string|null $password
      * @param string|null $email
      * @param string|null $phone_number
+     * @param null|Uuid $addressId
+     * @param null|Uuid $profileId
      */
-    public function __construct(null|Uuid|string $id = null, ?string $first_name = null, ?string $last_name = null, ?int $age = null, ?string $email = null, ?string $phone_number = null)
+    public function __construct(
+        null|Uuid|string $id = null,
+        ?string $login = null,
+        ?string $password = null,
+        ?string $email = null,
+        ?string $phone_number = null,
+        null|Uuid|string $addressId = null,
+        null|Uuid|string $profileId = null
+    )
     {
         $this->id = $id;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->age = $age;
+        $this->login = $login;
+        $this->password = $password;
         $this->email = $email;
         $this->phone_number = $phone_number;
+        $this->addressId = $addressId;
+        $this->profileId = $profileId;
     }
-
 
     public function getId(): null|Uuid|string
     {
@@ -60,38 +71,26 @@ class Users
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getLogin(): ?string
     {
-        return $this->first_name;
+        return $this->login;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setLogin(string $login): static
     {
-        $this->first_name = $first_name;
+        $this->login = $login;
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getPassword(): ?string
     {
-        return $this->last_name;
+        return $this->password;
     }
 
-    public function setLastName(string $last_name): static
+    public function setPassword(string $password): static
     {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    public function getAge(): ?int
-    {
-        return $this->age;
-    }
-
-    public function setAge(int $age): static
-    {
-        $this->age = $age;
+        $this->password = $password;
 
         return $this;
     }
@@ -118,5 +117,32 @@ class Users
         $this->phone_number = $phone_number;
 
         return $this;
+    }
+
+    public function setAddressId(null|Uuid|string $addressId): static
+    {
+        $this->addressId = $addressId;
+
+        return $this;
+    }
+
+    public function setProfileId(null|Uuid|string $profileId): static
+    {
+        $this->profileId = $profileId;
+
+        return $this;
+    }
+
+    #[ORM\JoinColumn(name: "address_id", referencedColumnName: "id")]
+    public function getAddressId(): null|Uuid|string
+    {
+        return $this->addressId;
+
+    }
+
+    #[ORM\JoinColumn(name: "profile_id", referencedColumnName: "id")]
+    public function getProfileId(): null|Uuid|string
+    {
+        return $this->profileId;
     }
 }

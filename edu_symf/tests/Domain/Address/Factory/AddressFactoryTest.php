@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Address\Factory;
 
+use App\DomainLayer\Address\Address;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
 use App\DomainLayer\Address\Factory\AddressFactory;
 use PHPUnit\Framework\TestCase;
@@ -12,45 +13,30 @@ class AddressFactoryTest extends TestCase
     /**
      * @dataProvider  validDataProvider
      */
-    public function testAddressFactory($country, $city, $street, $houseNumber): void
+    public function testValidate($createAddressDTO): void
     {
-        $createAddressDTO = new CreateAddressDTO($country, $city, $street, $houseNumber);
-
         $validator = $this->createMock(ValidatorInterface::class);
-        $validator->expects($this->once())->method('validate');
-        $addressFactory = new AddressFactory($validator);
+        $validator->expects($this->once())
+            ->method('validate')
+            ->with($createAddressDTO);
 
-        $address = $addressFactory->CreateAddress(new CreateAddressDTO(
-            $country,
-            $city,
-            $street,
-            $houseNumber
-        ));
-
-            $this->assertEquals(
-            array(
-                $country,
-                $city,
-                $street,
-                $houseNumber
-            ),
-            array(
-                $address->getCountry(),
-                $address->getCity(),
-                $address->getStreet(),
-                $address->getHouseNumber())
-        );
+        $factory = new AddressFactory($validator);
+        $actualAddress = $factory->CreateAddress($createAddressDTO);
+        $expectedAddress = new Address($createAddressDTO);
+        $this->assertEquals($expectedAddress, $actualAddress);
     }
+
     public function validDataProvider():array
     {
         return [
-            'when data is valid' =>
-            [
-                'country' => 'Lapland',
-                'city' => 'NightCity',
-                'street' => 'RedLight',
-                'houseNumber' => '101'
-            ]
+          [
+              'createAddressDTO' => new CreateAddressDTO(
+                  'Lapland',
+                  'NetherWill',
+                  'GreenStreet',
+                  '61A'
+              )
+          ]
         ];
     }
 }

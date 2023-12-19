@@ -2,16 +2,13 @@
 
 namespace App\DomainLayer\Storage;
 
-use App\InfrastructureLayer\UserDTO\DeleteUserDTO;
-use App\InfrastructureLayer\UserDTO\EditUserDTO;
-use App\InfrastructureLayer\UserDTO\GetUserDTO;
-use App\InfrastructureLayer\UserDTO\GotUserDTO;
-use App\InfrastructureLayer\UserDTO\SavedUserDTO;
-use App\InfrastructureLayer\UserDTO\SaveUserDTO;
+use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
+use App\DomainLayer\User\UserDTO\SaveUserDTO;
 
 interface StorageManagerInterface
 {
-    public function saveUser(SaveUserDTO $saveUserDTO) : SavedUserDTO;
-    public function getUser(GetUserDTO $getUserDTO) : GotUserDTO;
+    public function saveUser(SaveUserDTO $saveUserDTO): SavedUserDTO;
+    public function getUsers(): UserDtoCollection;
 
 }

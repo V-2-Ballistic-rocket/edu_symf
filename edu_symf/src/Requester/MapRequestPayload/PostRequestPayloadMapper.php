@@ -17,11 +17,18 @@ class PostRequestPayloadMapper implements ValueResolverInterface
             return [];
         }
         return [new UserRegistrationRequestDTO(
+            $request->get('login') ?? null,
+            $request->get('password') ?? null,
+            $request->get('email') ?? null,
+            $request->get('phone_number') ?? null,
             $request->get('first_name') ?? null,
             $request->get('last_name') ?? null,
             $request->get('age') ?? null,
-            $request->get('email') ?? null,
-            $request->get('phone_number') ?? null
+            $request->get('path_to_avatar') ?? null,
+            $request->get('country') ?? null,
+            $request->get('city') ?? null,
+            $request->get('street') ?? null,
+            $request->get('house_number') ?? null
         )];
 
     }

@@ -2,8 +2,6 @@
 
 namespace App\DomainLayer\Address\Factory;
 
-use App\common\Validators\ContainProperName;
-use App\common\Validators\ContainProperNameValidator;
 use App\DomainLayer\Address\Address;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
 use PHPUnit\Framework\Exception;

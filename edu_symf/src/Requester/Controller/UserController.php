@@ -2,10 +2,10 @@
 
 namespace App\Requester\Controller;
 
+use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
-use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
-use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
+use App\InfrastructureLayer\Postgres\DbManager;
 use App\Requester\Controller\DTO\UserRegistrationRequestDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,9 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private DBManagerWithDoctrine $dbManager,
+        private DbManager                        $dbManager,
         private UserCollectionDtoMapperInterface $userCollectionDtoMapper,
-        private UserRegistration $userRegistration
+        private UserRegistration                 $userRegistration
     ){
     }
 
@@ -30,11 +30,18 @@ class UserController extends AbstractController
     {
 
         $userRegistrationDTO = new UserRegistrationDTO(
+            $dto->login,
+            $dto->password,
+            $dto->email,
+            $dto->phoneNumber,
             $dto->firstName,
             $dto->lastName,
             $dto->age,
-            $dto->email,
-            $dto->phoneNumber
+            $dto->pathToAvatar,
+            $dto->country,
+            $dto->city,
+            $dto->street,
+            $dto->houseNumber
         );
         try {
             $id = $this->userRegistration

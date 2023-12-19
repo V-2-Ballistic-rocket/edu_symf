@@ -2,6 +2,7 @@
 
 namespace App\common\Validators;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 class ContainProperName extends Constraint

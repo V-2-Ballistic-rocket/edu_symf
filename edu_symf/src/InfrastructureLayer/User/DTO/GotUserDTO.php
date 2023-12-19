@@ -1,10 +1,13 @@
 <?php
 
-namespace App\InfrastructureLayer\UserDTO;
+namespace App\InfrastructureLayer\User\DTO;
 
-readonly class SaveUserDTO
+use Symfony\Component\Uid\Uuid;
+
+readonly class GotUserDTO
 {
     public function __construct(
+        public ?Uuid $id = null,
         public string $firstName = "",
         public string $lastName = "",
         public int $age = 0,

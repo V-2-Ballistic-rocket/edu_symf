@@ -2,37 +2,35 @@
 
 namespace App\DomainLayer\User;
 
+use App\DomainLayer\Address\Address;
+use App\DomainLayer\User\Profile\Profile;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
+use Symfony\Component\Uid\Uuid;
 
 class User
 {
-    public string $firstName = "";
-    public string $lastName = "";
-    public int $age = 0;
-    public string $email = "";
-    public ?string $phoneNumber = "";
-    public function  __construct(CreateUserDTO $createUserDTO)
+    public function  __construct(
+        private null|string|Uuid $id = null,
+        private string $login = '',
+        private string $password = '',
+        private string $email = '',
+        private ?string $phoneNumber = '',
+        private ?Profile $profile = null,
+        private ?Address $address = null
+    )
+    {}
+    public function getId(): ?Uuid
     {
-        $this->firstName = $createUserDTO->firstName;
-        $this->lastName = $createUserDTO->lastName;
-        $this->age = $createUserDTO->age;
-        $this->email = $createUserDTO->email;
-        $this->phoneNumber = $createUserDTO->phoneNumber;
+        return $this->id;
+    }
+    public function getLogin(): string
+    {
+        return $this->login;
     }
 
-    public function getLastName(): string
+    public function getPassword(): string
     {
-        return $this->lastName;
-    }
-
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    public function getAge(): int
-    {
-        return $this->age;
+        return $this->password;
     }
 
     public function getEmail(): string
@@ -45,4 +43,13 @@ class User
         return $this->phoneNumber;
     }
 
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
 }

@@ -12,7 +12,7 @@ class ContainProperNameValidator extends ConstraintValidator
     /**
      * @inheritDoc
      */
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof ContainProperName) {
             throw new UnexpectedTypeException($constraint, ContainProperName::class);
@@ -23,7 +23,7 @@ class ContainProperNameValidator extends ConstraintValidator
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
-        if(!preg_match('/\d/', $value)){
+        if(preg_match('/\d/', $value)){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

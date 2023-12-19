@@ -2,42 +2,50 @@
 
 namespace App\Tests\Domain\User\Registration;
 
+use App\DomainLayer\Storage\StorageManagerInterface;
+use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
-use App\DomainLayer\User\UserDTO\UserRegistrationDTO;
-use App\InfrastructureLayer\Postgres\DBManagerWithDoctrine;
-use App\InfrastructureLayer\UserDTO\SavedUserDTO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserRegistrationTest extends KernelTestCase
 {
     /**
-     * @dataProvider validUserRegistrationTestMethodProvider
+     * @dataProvider userRegistrationProvider
      */
-    public function testUserRegistrationMethod($firstName, $lastName, $age, $email, $phoneNumber): void
+    public function testRegistration($userRegistrationDTO)
     {
-        $userRegistration = $this->createMock(UserRegistration::class);
-        $storageManager = $this->createMock(DBManagerWithDoctrine::class);
-
-        $savedUserDTO = $userRegistration->registrationUser(new UserRegistrationDTO(
-            $firstName,
-            $lastName,
-            $age,
-            $email,
-            $phoneNumber), $storageManager);
-
-        $this->assertInstanceOf(SavedUserDTO::class, $savedUserDTO);
+        $expectedResult = new SavedUserDTO('qwerty-qwerty-123456-123456');
+        $storageManager = $this->createMock(StorageManagerInterface::class);
+        $storageManager->expects($this->once())
+            ->method('saveUser')
+            ->willReturn($expectedResult);
+        $register = new UserRegistration();
+        $actualResult = $register->registrationUser($userRegistrationDTO, $storageManager);
+        $expectedResult = new SavedUserDTO('qwerty-qwerty-123456-123456');
+        $this->assertEquals($expectedResult, $actualResult);
     }
-    public function validUserRegistrationTestMethodProvider(): array
+
+    public function userRegistrationProvider(): array
     {
         return [
-            'when user is valid' =>
-                [
-                    'firstName' => 'Alexandr',
-                    'lastName' => 'Ivanov',
-                    'age' => 35,
-                    'email' => 'a.ivanov@mail.com',
-                    'phoneNumber' => null
-                ]
+            [
+                'userRegistrationDTO' => new UserRegistrationDTO(
+                    'login',
+                    'password',
+                    'email@email.com',
+                    '88005553535',
+                    'anton',
+                    'teryentyev',
+                    14,
+                    '',
+                    'Lapland',
+                    'Mega City',
+                    'Hard street',
+                    '123C',
+                    'qwerty-qwerty-123456-123456'
+                )
+            ]
         ];
     }
 }

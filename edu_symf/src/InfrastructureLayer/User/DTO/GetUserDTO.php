@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\UserDTO;
+namespace App\InfrastructureLayer\User\DTO;
 
 use Symfony\Component\Uid\Uuid;
 

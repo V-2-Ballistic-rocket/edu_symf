@@ -1,12 +1,12 @@
 <?php
 
-namespace App\InfrastructureLayer\UserDTO;
+namespace App\DomainLayer\User\Registration\DTO;
 
 use Symfony\Component\Uid\Uuid;
 
 class SavedUserDTO
 {
     public function __construct(
-        public ?Uuid $id = null
+        public null|string|Uuid $id = null
     ){}
 }
