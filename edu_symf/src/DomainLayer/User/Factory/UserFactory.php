@@ -5,6 +5,7 @@ namespace App\DomainLayer\User\Factory;
 use App\DomainLayer\Address\Address;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
 use App\DomainLayer\Address\Factory\AddressFactory;
+use App\DomainLayer\User\Exceptions\UserException;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
 use App\DomainLayer\User\Profile\Factory\ProfileFactory;
 use App\DomainLayer\User\Profile\Profile;
@@ -18,9 +19,7 @@ class UserFactory
     public function __construct(
         private ValidatorInterface $validator
     )
-    {
-
-    }
+    {}
 
     public function createUser(CreateUserDTO $createUserDTO) : ?User
     {
@@ -28,7 +27,7 @@ class UserFactory
         $errors = $this->validator->validate($createUserDTO);
         if(count($errors) > 0){
             $errorString = (string) $errors;
-            return null;
+            throw new UserException($errors, 400);
         }
 
         $address = $this->getAddress($createUserDTO->createAddressDTO);

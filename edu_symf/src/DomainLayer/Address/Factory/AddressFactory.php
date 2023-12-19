@@ -4,7 +4,7 @@ namespace App\DomainLayer\Address\Factory;
 
 use App\DomainLayer\Address\Address;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
-use PHPUnit\Framework\Exception;
+use App\DomainLayer\Address\Exceptions\AddressException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AddressFactory
@@ -19,7 +19,7 @@ class AddressFactory
     {
         $violations = $this->validator->validate($createAddressDTO);
         if(count($violations) > 0){
-            throw new Exception($violations, 400);
+            throw new AddressException($violations, 400);
         }
         return new Address($createAddressDTO);
     }

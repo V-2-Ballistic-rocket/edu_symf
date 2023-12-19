@@ -5,6 +5,7 @@ namespace App\DomainLayer\User\Registration;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
 use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\Storage\StorageManagerInterface;
+use App\DomainLayer\User\Exceptions\CreateUserException;
 use App\DomainLayer\User\Factory\UserFactory;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
@@ -42,27 +43,30 @@ class UserRegistration
                 ),
                 $userRegistrationDTO->id,
             ));
-        if(!$user)
+
+        try {
+            $savedUserDto =$storageManager->saveUser(new SaveUserDTO(
+                $user->getLogin(),
+                $user->getPassword(),
+                $user->getEmail(),
+                $user->getPhoneNumber(),
+                new SaveProfileDTO(
+                    $user->getProfile()->getFirstName(),
+                    $user->getProfile()->getLastName(),
+                    $user->getProfile()->getAge(),
+                    $user->getProfile()->getAvatar(),
+                ),
+                new SaveAddressDTO(
+                    $user->getAddress()->getCountry(),
+                    $user->getAddress()->getCity(),
+                    $user->getAddress()->getStreet(),
+                    $user->getAddress()->getHouseNumber()
+                )
+            ));
+        } catch (\Exception $exception)
         {
-            throw new \Exception('Пользователь с такими данными не может быть сохранен.', 400);
+            throw new CreateUserException();
         }
-        return $storageManager->saveUser(new SaveUserDTO(
-            $user->getLogin(),
-            $user->getPassword(),
-            $user->getEmail(),
-            $user->getPhoneNumber(),
-            new SaveProfileDTO(
-                $user->getProfile()->getFirstName(),
-                $user->getProfile()->getLastName(),
-                $user->getProfile()->getAge(),
-                $user->getProfile()->getAvatar(),
-            ),
-            new SaveAddressDTO(
-                $user->getAddress()->getCountry(),
-                $user->getAddress()->getCity(),
-                $user->getAddress()->getStreet(),
-                $user->getAddress()->getHouseNumber()
-            )
-        ));
+        return $savedUserDto;
     }
 }
