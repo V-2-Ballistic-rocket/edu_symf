@@ -18,12 +18,12 @@ class ContainPhoneNumberValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
         }
         if (null === $value || '' === $value) {
-            return;
+            throw new UnexpectedTypeException($constraint, ContainPhoneNumber::class);
         }
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
-        if(!preg_match("/^[\+]?\d[\s|\-]?[(]?\d{3}[\)]?[\s|\-]?\d{3}[\s|\-]?\d{2}[\s|\-]?\d{2}$/", $value)){
+        if(!preg_match("/^[\+]?\d{1,3}[\s|\-]?[(]?\d{3}[\)]?[\s|\-]?\d{3}[\s|\-]?\d{2}[\s|\-]?\d{2}$/", $value)){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

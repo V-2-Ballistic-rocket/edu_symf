@@ -24,7 +24,8 @@ class ContainAgeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'int');
         }
 
-        if(intval($value) > 120 || intval($value) < 0){
+
+        if(intval($value) > 120 || intval($value) <= 0){
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

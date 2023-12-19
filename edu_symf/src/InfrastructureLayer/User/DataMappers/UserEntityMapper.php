@@ -8,7 +8,6 @@ class UserEntityMapper
 {
     public function mapToArray(array $usersEntities , array $profilesEntities, array $addressEntities): array
     {
-        //dd($usersEntities, $profilesEntities, $addressEntities);
         $users = [];
         foreach ($usersEntities  as $user){
             $address = null;
