@@ -69,4 +69,13 @@ class UserController extends AbstractController
             status: 200
         );
     }
+    #[Route('users/registration/confirm/{token}, name: confirm_registration')]
+    public function confirmRegistration($token): Response
+    {
+        $this->userRegistration->confirmRegistration($token);
+        return new Response(
+            'success!',
+            200
+        );
+    }
 }

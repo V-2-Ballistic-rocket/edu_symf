@@ -32,11 +32,14 @@ final class Version20231204145028 extends AbstractMigration
             phone_number VARCHAR(15) DEFAULT NULL,
             profile_id UUID,
             address_id UUID,
+            token UUID,
+            confirm BOOLEAN DEFAULT FALSE,
             CONSTRAINT FK_profile FOREIGN KEY (profile_id) REFERENCES profile (id),
             CONSTRAINT FK_address FOREIGN KEY (address_id) REFERENCES address (id),
             PRIMARY KEY(id))'
         );
         $this->addSql('COMMENT ON COLUMN users.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN users.token IS \'(DC2Type:uuid)\'');
     }
     public function down(Schema $schema): void
     {

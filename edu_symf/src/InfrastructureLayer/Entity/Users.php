@@ -31,6 +31,12 @@ class Users
     #[ORM\Column(name: "profile_id", type: "uuid", nullable: true)]
     private null|Uuid|string $profileId;
 
+    #[ORM\Column(name: "token", type: "uuid", nullable: true)]
+    private null|Uuid|string $token;
+
+    #[ORM\Column(name: "confirm", type: "bool")]
+    private bool $confirmation = false;
+
     /**
      * @param Uuid|null|string $id
      * @param string|null $login
@@ -39,6 +45,7 @@ class Users
      * @param string|null $phone_number
      * @param null|Uuid $addressId
      * @param null|Uuid $profileId
+     * @param bool $confirmation
      */
     public function __construct(
         null|Uuid|string $id = null,
@@ -47,7 +54,8 @@ class Users
         ?string $email = null,
         ?string $phone_number = null,
         null|Uuid|string $addressId = null,
-        null|Uuid|string $profileId = null
+        null|Uuid|string $profileId = null,
+        bool $confirmation = false
     )
     {
         $this->id = $id;
@@ -57,6 +65,7 @@ class Users
         $this->phone_number = $phone_number;
         $this->addressId = $addressId;
         $this->profileId = $profileId;
+        $this->confirmation = $confirmation;
     }
 
     public function getId(): null|Uuid|string
@@ -144,5 +153,12 @@ class Users
     public function getProfileId(): null|Uuid|string
     {
         return $this->profileId;
+    }
+
+    public function setConfirmation(): static
+    {
+        $this->confirmation = true;
+
+        return $this;
     }
 }

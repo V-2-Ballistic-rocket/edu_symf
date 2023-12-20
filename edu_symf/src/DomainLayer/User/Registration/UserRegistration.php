@@ -9,6 +9,7 @@ use App\DomainLayer\User\Exceptions\CreateUserException;
 use App\DomainLayer\User\Factory\UserFactory;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
+use App\DomainLayer\User\Registration\DTO\ConfirmRegistrationDTO;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
 use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
@@ -17,9 +18,14 @@ use Symfony\Component\Validator\Validation;
 
 class UserRegistration
 {
+    public function __construct(
+        private ?StorageManagerInterface $storageManager = null
+    )
+    {
+    }
+
     public function registrationUser(
-        UserRegistrationDTO $userRegistrationDTO,
-        StorageManagerInterface $storageManager
+        UserRegistrationDTO $userRegistrationDTO
     ) : SavedUserDTO
     {
         $userFactory = new UserFactory(Validation::createValidator());
@@ -45,7 +51,7 @@ class UserRegistration
             ));
 
         try {
-            $savedUserDto =$storageManager->saveUser(new SaveUserDTO(
+            $savedUserDto = $this->storageManager->saveUser(new SaveUserDTO(
                 $user->getLogin(),
                 $user->getPassword(),
                 $user->getEmail(),
@@ -68,5 +74,10 @@ class UserRegistration
             throw new CreateUserException();
         }
         return $savedUserDto;
+    }
+
+    public function confirmRegistration(ConfirmRegistrationDTO $confirmRegistrationDTO): void
+    {
+        $this->storageManager->confirmRegistration($confirmRegistrationDTO);
     }
 }
