@@ -1,8 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\Address\DTO;
-
-use Symfony\Component\Uid\Uuid;
+namespace App\InfrastructureLayer\Postgres\Address\DTO;
 
 readonly class AddressDTO
 {

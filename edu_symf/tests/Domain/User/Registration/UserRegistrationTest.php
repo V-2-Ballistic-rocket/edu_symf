@@ -4,8 +4,10 @@ namespace App\Tests\Domain\User\Registration;
 
 use App\DomainLayer\Storage\StorageManagerInterface;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\setConfirmUserDTO;
 use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
+use App\InfrastructureLayer\Postgres\DbManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserRegistrationTest extends KernelTestCase
@@ -16,12 +18,12 @@ class UserRegistrationTest extends KernelTestCase
     public function testRegistration($userRegistrationDTO)
     {
         $expectedResult = new SavedUserDTO('qwerty-qwerty-123456-123456');
-        $storageManager = $this->createMock(StorageManagerInterface::class);
+        $storageManager = $this->createMock(DbManager::class);
         $storageManager->expects($this->once())
             ->method('saveUser')
             ->willReturn($expectedResult);
-        $register = new UserRegistration();
-        $actualResult = $register->registrationUser($userRegistrationDTO, $storageManager);
+        $register = new UserRegistration($storageManager);
+        $actualResult = $register->registrationUser($userRegistrationDTO);
         $expectedResult = new SavedUserDTO('qwerty-qwerty-123456-123456');
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -47,5 +49,14 @@ class UserRegistrationTest extends KernelTestCase
                 )
             ]
         ];
+    }
+
+    public function testConfirmRegistration(): void
+    {
+        $storageManager = $this->createMock(DbManager::class);
+        $storageManager->expects($this->once())
+            ->method('confirmRegistration');
+        $register = new UserRegistration($storageManager);
+        $register->confirmRegistration(new setConfirmUserDTO("new token"));
     }
 }

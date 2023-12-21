@@ -1,8 +1,8 @@
 <?php
 
-namespace App\InfrastructureLayer\Entity;
+namespace App\InfrastructureLayer\Postgres\Entity;
 
-use App\InfrastructureLayer\Repository\UsersRepository;
+use App\InfrastructureLayer\Postgres\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -34,7 +34,7 @@ class Users
     #[ORM\Column(name: "token", type: "uuid", nullable: true)]
     private null|Uuid|string $token;
 
-    #[ORM\Column(name: "confirm", type: "bool")]
+    #[ORM\Column(name: "confirm", type: "boolean")]
     private bool $confirmation = false;
 
     /**
@@ -45,7 +45,7 @@ class Users
      * @param string|null $phone_number
      * @param null|Uuid $addressId
      * @param null|Uuid $profileId
-     * @param bool $confirmation
+     * @param boolean $confirmation
      */
     public function __construct(
         null|Uuid|string $id = null,
@@ -55,6 +55,7 @@ class Users
         ?string $phone_number = null,
         null|Uuid|string $addressId = null,
         null|Uuid|string $profileId = null,
+        null|Uuid|string $token = null,
         bool $confirmation = false
     )
     {
@@ -65,6 +66,7 @@ class Users
         $this->phone_number = $phone_number;
         $this->addressId = $addressId;
         $this->profileId = $profileId;
+        $this->token = $token;
         $this->confirmation = $confirmation;
     }
 
@@ -80,6 +82,9 @@ class Users
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLogin(): ?string
     {
         return $this->login;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\InfrastructureLayer\Repository;
+namespace App\InfrastructureLayer\Postgres\Repository;
 
-use App\InfrastructureLayer\Entity\Profile;
+use App\InfrastructureLayer\Postgres\Entity\Profile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

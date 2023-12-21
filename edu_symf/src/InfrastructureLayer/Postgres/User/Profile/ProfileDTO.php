@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\User\Profile;
+namespace App\InfrastructureLayer\Postgres\User\Profile;
 
 use App\DomainLayer\User\Profile\Avatar\Avatar;
 

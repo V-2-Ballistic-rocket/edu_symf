@@ -2,10 +2,10 @@
 
 namespace App\Tests\InfrastructureLayer\User\DataMappers;
 
-use App\InfrastructureLayer\Entity\Address;
-use App\InfrastructureLayer\Entity\Profile;
-use App\InfrastructureLayer\Entity\Users;
-use App\InfrastructureLayer\User\DataMappers\UserEntityMapper;
+use App\InfrastructureLayer\Postgres\Entity\Address;
+use App\InfrastructureLayer\Postgres\Entity\Profile;
+use App\InfrastructureLayer\Postgres\Entity\Users;
+use App\InfrastructureLayer\Postgres\User\DataMappers\UserEntityMapper;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
 

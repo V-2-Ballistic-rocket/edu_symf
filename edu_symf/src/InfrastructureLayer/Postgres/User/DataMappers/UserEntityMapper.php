@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\User\DataMappers;
+namespace App\InfrastructureLayer\Postgres\User\DataMappers;
 
 use Symfony\Component\Uid\Uuid;
 

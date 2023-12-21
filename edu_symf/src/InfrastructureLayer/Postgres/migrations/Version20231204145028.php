@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\InfrastructureLayer\migrations;
+namespace App\InfrastructureLayer\Postgres\migrations;
 
 
 use Doctrine\DBAL\Schema\Schema;

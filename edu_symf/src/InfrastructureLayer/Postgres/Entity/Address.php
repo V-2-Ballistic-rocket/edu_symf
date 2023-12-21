@@ -1,8 +1,8 @@
 <?php
 
-namespace App\InfrastructureLayer\Entity;
+namespace App\InfrastructureLayer\Postgres\Entity;
 
-use App\InfrastructureLayer\Repository\AddressRepository;
+use App\InfrastructureLayer\Postgres\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 

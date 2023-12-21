@@ -18,8 +18,8 @@ doctrine:
             App:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/InfrastructureLayer/Entity'
-                prefix: 'App\InfrastructureLayer\Entity'
+                dir: '%kernel.project_dir%/src/InfrastructureLayer/Postgres/Entity'
+                prefix: 'App\InfrastructureLayer\Postgres\Entity'
                 alias: App
 
 when@test:

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\InfrastructureLayer\Repository;
+namespace App\InfrastructureLayer\Postgres\Repository;
 
-use App\InfrastructureLayer\Entity\Address;
+use App\InfrastructureLayer\Postgres\Entity\Address;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

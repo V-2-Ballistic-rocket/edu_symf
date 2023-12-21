@@ -1,4 +1,4 @@
-вFROM php:8.2-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 RUN apk update && apk upgrade && apk add git && \
     apk add --no-cache icu-dev postgresql-dev libzip-dev g++ make && \

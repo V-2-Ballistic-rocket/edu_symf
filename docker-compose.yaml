@@ -20,6 +20,14 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-
+  mailhog:
+    container_name: programwithgio-mailhog
+    image: mailhog/mailhog
+    restart: always
+    logging:
+      driver: "none"
+    ports:
+      - "8025:8025"
+      - "1025:1025"
 volumes:
   database_data:

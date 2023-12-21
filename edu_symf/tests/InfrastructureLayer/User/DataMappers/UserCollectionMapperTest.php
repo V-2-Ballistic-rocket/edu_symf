@@ -6,7 +6,7 @@ use App\DomainLayer\Address\AddressDTO\AddressDTO;
 use App\DomainLayer\User\Profile\DTO\ProfileDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
-use App\InfrastructureLayer\User\DataMappers\UserCollectionMapper;
+use App\InfrastructureLayer\Postgres\User\DataMappers\UserCollectionMapper;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
 

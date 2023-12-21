@@ -1,6 +1,6 @@
 <?php
 
-namespace App\InfrastructureLayer\User\DTO;
+namespace App\InfrastructureLayer\Postgres\User\DTO;
 
 use Symfony\Component\Uid\Uuid;
 

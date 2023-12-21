@@ -6,12 +6,15 @@ use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\User\Profile\Avatar\Avatar;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\setConfirmUserDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\DomainLayer\User\UserDTO\SaveUserDTO;
+use App\InfrastructureLayer\Mailer\DTO\ConfirmRegistrationDTO;
 use App\InfrastructureLayer\Postgres\DbManager;
-use App\InfrastructureLayer\Repository\UsersRepository;
-use App\InfrastructureLayer\User\DataMappers\UserCollectionMapper;
-use App\InfrastructureLayer\User\DataMappers\UserEntityMapper;
+use App\InfrastructureLayer\Postgres\Entity\Users;
+use App\InfrastructureLayer\Postgres\Repository\UsersRepository;
+use App\InfrastructureLayer\Postgres\User\DataMappers\UserCollectionMapper;
+use App\InfrastructureLayer\Postgres\User\DataMappers\UserEntityMapper;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -183,5 +186,39 @@ class DbManagerTest extends KernelTestCase
                 )
             ]
         ];
+    }
+
+    public function testConfirmRegistration(): void
+    {
+        $registry = $this->createMock(ManagerRegistry::class);
+        $userRepository = $this->createMock(UsersRepository::class);
+        $user = $this->createMock(Users::class);
+        $entityManager = $this->createMock(EntityManager::class);
+        $collectionMapper = $this->createMock(UserCollectionMapper::class);
+        $entityMapper = $this->createMock(UserEntityMapper::class);
+
+        $confirmRegistrationDTO = new setConfirmUserDTO('4ac93d6e-9fc9-11ee-860f-3709d4cbab7d');
+
+        $registry->expects($this->once())
+            ->method('getRepository')
+            ->willReturn($userRepository);
+        $userRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['token' => Uuid::fromString($confirmRegistrationDTO->token)])
+            ->willReturn($user);
+        $user->expects($this->once())
+            ->method("setConfirmation");
+        $registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with(Users::class)
+            ->willReturn($entityManager);
+        $entityManager->expects($this->once())
+            ->method('persist')
+            ->with($user);
+        $entityManager->expects($this->once())
+            ->method('flush');
+
+        $dbManager = new DbManager($registry, $collectionMapper, $entityMapper);
+        $dbManager->confirmRegistration($confirmRegistrationDTO);
     }
 }

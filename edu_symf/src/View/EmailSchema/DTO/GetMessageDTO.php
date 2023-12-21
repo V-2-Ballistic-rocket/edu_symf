@@ -2,7 +2,12 @@
 
 namespace App\View\EmailSchema\DTO;
 
-class GetMessageDTO
+readonly class GetMessageDTO
 {
-
+    public function __construct(
+        public ?string $html = '',
+        public ?string $text = ''
+    )
+    {
+    }
 }

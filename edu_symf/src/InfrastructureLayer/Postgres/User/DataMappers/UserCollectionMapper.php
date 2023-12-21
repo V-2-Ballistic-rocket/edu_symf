@@ -1,12 +1,12 @@
 <?php
 
-namespace App\InfrastructureLayer\User\DataMappers;
+namespace App\InfrastructureLayer\Postgres\User\DataMappers;
 
 use App\DomainLayer\Address\AddressDTO\AddressDTO;
 use App\DomainLayer\User\Profile\DTO\ProfileDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
-use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\DomainLayer\User\UserDTO\Collection\UserDTO;
+use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 
 class UserCollectionMapper implements UserCollectionDtoMapperInterface
 {

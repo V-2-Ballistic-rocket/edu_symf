@@ -5,11 +5,12 @@ namespace App\DomainLayer\User\Registration;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
 use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\Storage\StorageManagerInterface;
+use App\DomainLayer\User\Exceptions\ConfirmUserException;
 use App\DomainLayer\User\Exceptions\CreateUserException;
 use App\DomainLayer\User\Factory\UserFactory;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
-use App\DomainLayer\User\Registration\DTO\ConfirmRegistrationDTO;
+use App\DomainLayer\User\Registration\DTO\setConfirmUserDTO;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
 use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
@@ -73,11 +74,16 @@ class UserRegistration
         {
             throw new CreateUserException();
         }
+
         return $savedUserDto;
     }
 
-    public function confirmRegistration(ConfirmRegistrationDTO $confirmRegistrationDTO): void
+    public function confirmRegistration(setConfirmUserDTO $confirmRegistrationDTO): void
     {
-        $this->storageManager->confirmRegistration($confirmRegistrationDTO);
+        try {
+            $this->storageManager->confirmRegistration($confirmRegistrationDTO);
+        } catch (\Exception $e) {
+            throw new ConfirmUserException();
+        }
     }
 }
