@@ -99,6 +99,9 @@
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/symfony/mailer" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/symfony/mime" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/symfony/polyfill-intl-idn" />
+      <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/doctrine/data-fixtures" />
+      <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/liip/test-fixtures-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
