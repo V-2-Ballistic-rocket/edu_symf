@@ -102,6 +102,7 @@
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/doctrine/data-fixtures" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/doctrine/doctrine-fixtures-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/liip/test-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/phpunit/dbunit" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

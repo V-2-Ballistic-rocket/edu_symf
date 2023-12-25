@@ -1,0 +1,28 @@
+doctrine:
+  dbal:
+    default_connection: default
+    connections:
+      default:
+        driver: 'pdo_pgsql'
+        host: 'postgres'
+        port: 5432
+        dbname: 'app_test'
+        user: 'postgres'
+        password: 'postgres'
+
+  orm:
+    entity_managers:
+      default:
+        mappings:
+          App:
+            type: annotation
+            dir: '%kernel.project_dir%/tests/Resource/Postgres/Entity'
+            prefix: 'App\Tests\Resource\Postgres\Entity'
+            is_bundle: false
+    auto_generate_proxy_classes: true
+    naming_strategy: doctrine.orm.naming_strategy.underscore
+    auto_mapping: true
+    default_repository_class: App\Tests\Resource\Postgres\Repository\DefaultRepository
+    migrations:
+      migrations_paths:
+        'App\Migrations': '%kernel.project_dir%/tests/Resource/Postgres/migrations'

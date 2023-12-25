@@ -107,6 +107,7 @@
       <path value="$PROJECT_DIR$/edu_symf/vendor/doctrine/data-fixtures" />
       <path value="$PROJECT_DIR$/edu_symf/vendor/doctrine/doctrine-fixtures-bundle" />
       <path value="$PROJECT_DIR$/edu_symf/vendor/liip/test-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/edu_symf/vendor/phpunit/dbunit" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

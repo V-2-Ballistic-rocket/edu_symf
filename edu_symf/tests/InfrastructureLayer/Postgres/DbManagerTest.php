@@ -14,7 +14,7 @@ use App\InfrastructureLayer\Postgres\Entity\Users;
 use App\InfrastructureLayer\Postgres\Repository\UsersRepository;
 use App\InfrastructureLayer\Postgres\User\DataMappers\UserCollectionMapper;
 use App\InfrastructureLayer\Postgres\User\DataMappers\UserEntityMapper;
-use App\Tests\Resources\Fixture\UserFixture;
+use App\Tests\Resource\Fixture\UserFixture;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
@@ -35,10 +35,13 @@ class DbManagerTest extends KernelTestCase
     }
     public function testFixt()
     {
-        $executor = $this->databaseTool = $this->databaseTool->loadFixtures([UserFixture::class]);
+        $executor = $this->databaseTool->loadFixtures([UserFixture::class]);
         $user = $executor->getReferenceRepository()->getReference(UserFixture::REFERENCE);
 
         $existedUser = $this->repository->findOneBy(['id' => $user->getId()]);
+
+        $this->assertEquals($user, $existedUser);
+
     }
     public function testGetUsers()
     {
