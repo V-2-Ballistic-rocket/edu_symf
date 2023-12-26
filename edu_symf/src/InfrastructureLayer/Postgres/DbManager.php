@@ -5,52 +5,56 @@ namespace App\InfrastructureLayer\Postgres;
 use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\Storage\StorageManagerInterface;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
-use App\DomainLayer\User\Registration\DTO\setConfirmUserDTO;
+use App\DomainLayer\User\Registration\DTO\GetUserByTokenDTO;
+use App\DomainLayer\User\Registration\DTO\GotUserDTO;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\SetConfirmUserDTO;
 use App\DomainLayer\User\UserDTO\Collection\UserDtoCollection;
 use App\DomainLayer\User\UserDTO\SaveUserDTO;
+use App\InfrastructureLayer\Postgres\Address\DTO\GetAddressByIdDTO;
 use App\InfrastructureLayer\Postgres\Entity\Address;
 use App\InfrastructureLayer\Postgres\Entity\Profile;
 use App\InfrastructureLayer\Postgres\Entity\Users;
 use App\InfrastructureLayer\Postgres\User\DataMappers\UserCollectionMapper;
 use App\InfrastructureLayer\Postgres\User\DataMappers\UserEntityMapper;
+use App\InfrastructureLayer\Postgres\User\Profile\DTO\GetProfileByIdDTO;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
 class DbManager implements StorageManagerInterface
 {
     public function __construct(
-        private ManagerRegistry $registry,
+        private ManagerRegistry      $registry,
         private UserCollectionMapper $collectionMapper,
-        private UserEntityMapper $entityMapper
+        private UserEntityMapper     $entityMapper
     )
-    {}
+    {
+    }
+
     public function saveUser(SaveUserDTO $saveUserDTO): SavedUserDTO
     {
-
         $entityManager = $this->registry->getManagerForClass(Users::class);
 
         $addressId = $this->saveAddress($saveUserDTO->saveAddressDTO);
-
         $profileId = $this->saveProfile($saveUserDTO->saveProfileDTO);
 
-        $id = Uuid::v1();
+        $id = $saveUserDTO->id ?? Uuid::v1();
         $confirmRegistrationToken = Uuid::v1();
         $user = new Users(
-            $id,
+            (string)$id,
             $saveUserDTO->login,
             $saveUserDTO->password,
             $saveUserDTO->email,
             $saveUserDTO->phoneNumber,
-            $addressId,
-            $profileId,
+            (string)$addressId,
+            (string)$profileId,
             (string)$confirmRegistrationToken
         );
         $entityManager->persist($user);
+
         try {
             $entityManager->flush();
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             dd($e->getMessage(), $e->getCode(), $e->getTraceAsString());
         }
 
@@ -112,16 +116,16 @@ class DbManager implements StorageManagerInterface
     public function getAllAddress(): array
     {
         $addressRepository = $this->registry->getRepository(Address::class);
-        return  $addressRepository->findAll();
+        return $addressRepository->findAll();
     }
 
     public function getAllProfiles(): array
     {
         $profileRepository = $this->registry->getRepository(Profile::class);
-        return  $profileRepository->findAll();
+        return $profileRepository->findAll();
     }
 
-    public function confirmRegistration(setConfirmUserDTO $confirmRegistrationDTO): void
+    public function confirmRegistration(SetConfirmUserDTO $confirmRegistrationDTO): void
     {
         $repository = $this->registry->getRepository(Users::class);
         $user = $repository->findOneBy(['token' => Uuid::fromString($confirmRegistrationDTO->token)]);
@@ -129,5 +133,41 @@ class DbManager implements StorageManagerInterface
         $entityManager = $this->registry->getManagerForClass(Users::class);
         $entityManager->persist($user);
         $entityManager->flush();
+    }
+
+    public function getUserByToken(GetUserByTokenDTO $getUserByTokenDTO): GotUserDTO
+    {
+        $repository = $this->registry->getRepository(Users::class);
+        $user = $repository->findOneBy(['token' => $getUserByTokenDTO->token]);
+        $address = $this->getAddressById(new GetAddressByIdDTO($user->getAddressId()));
+        $profile = $this->getProfileById(new GetProfileByIdDTO($user->getProfileId()));
+        return new GotUserDTO(
+            $user->getId(),
+            $user->getLogin(),
+            $user->getPassword(),
+            $user->getEmail(),
+            $user->getPhoneNumber(),
+            $user->isConfirm(),
+            $profile->getFirstName(),
+            $profile->getLastName(),
+            $profile->getAge(),
+            $profile->getToAvatarPath(),
+            $address->getCountry(),
+            $address->getCity(),
+            $address->getStreet(),
+            $address->getHouseNumber()
+        );
+    }
+
+    private function getAddressById(GetAddressByIdDTO $getAddressByIdDTO): Address
+    {
+        $repository = $this->registry->getRepository(Address::class);
+        return $repository->find($getAddressByIdDTO->id);
+    }
+
+    private function getProfileById(GetProfileByIdDTO $getProfileByIdDTO): Profile
+    {
+        $repository = $this->registry->getRepository(Profile::class);
+        return $repository->find($getProfileByIdDTO->id);
     }
 }

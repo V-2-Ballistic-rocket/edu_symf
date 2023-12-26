@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 readonly class CreateUserDTO
 {
     public function __construct(
+        public ?string $id = null,
         public string $login = '',
         public string $password = '',
         #[Assert\Email]
@@ -17,9 +18,7 @@ readonly class CreateUserDTO
         #[CustomAssert\ContainPhoneNumber]
         public ?string $phoneNumber = '',
         public ?CreateProfileDTO $createProfileDTO = null,
-        public ?CreateAddressDTO $createAddressDTO = null,
-        public null|string|Uuid $id = null,
+        public ?CreateAddressDTO $createAddressDTO = null
     )
-    {
-    }
+    {}
 }

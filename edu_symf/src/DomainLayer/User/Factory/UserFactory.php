@@ -23,15 +23,14 @@ class UserFactory
 
     public function createUser(CreateUserDTO $createUserDTO) : ?User
     {
-        $id = $createUserDTO->id ?? Uuid::v1();
+        $id = $createUserDTO->id ?? $this->createId();
         $errors = $this->validator->validate($createUserDTO);
         if(count($errors) > 0){
-            $errorString = (string) $errors;
-            throw new UserException($errors, 400);
+            throw new UserException($errors);
         }
 
-        $address = $this->getAddress($createUserDTO->createAddressDTO);
-        $profile = $this->getProfile($createUserDTO->createProfileDTO);
+        $address = $this->createAddress($createUserDTO->createAddressDTO);
+        $profile = $this->createProfile($createUserDTO->createProfileDTO);
         return new User(
             $id,
             $createUserDTO->login,
@@ -43,14 +42,19 @@ class UserFactory
         );
     }
 
-    private function getAddress(CreateAddressDTO $addressDTO): ?Address
+    private function createAddress(CreateAddressDTO $addressDTO): ?Address
     {
         $addressFactory = new AddressFactory($this->validator);
         return $addressFactory->CreateAddress($addressDTO);
     }
-    private function getProfile(CreateProfileDTO $profileDTO): ?Profile
+    private function createProfile(CreateProfileDTO $profileDTO): ?Profile
     {
         $profileFactory = new ProfileFactory($this->validator);
         return $profileFactory->createProfile($profileDTO);
+    }
+
+    private function createId(): uuid
+    {
+        return Uuid::v1();
     }
 }

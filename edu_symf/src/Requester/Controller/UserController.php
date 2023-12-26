@@ -3,15 +3,18 @@
 namespace App\Requester\Controller;
 
 use App\DomainLayer\Exceptions\DomainException;
+use App\DomainLayer\Mail\DTO\SendConfirmMailDTO;
 use App\DomainLayer\User\Exceptions\ConfirmUserException;
-use App\DomainLayer\User\Registration\DTO\setConfirmUserDTO;
+use App\DomainLayer\User\Registration\DataMappers\UserRegistrationDtoMapper;
+use App\DomainLayer\User\Registration\DTO\SetConfirmUserDTO;
 use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
 use App\DomainLayer\User\Registration\UserRegistration;
 use App\DomainLayer\User\UserDTO\Collection\UserCollectionDtoMapperInterface;
-use App\InfrastructureLayer\Mailer\DTO\ConfirmRegistrationDTO;
 use App\InfrastructureLayer\Mailer\MailManager;
 use App\InfrastructureLayer\Postgres\DbManager;
+use App\Requester\Controller\DataMappers\UserRegistrationRequestDtoMapper;
 use App\Requester\Controller\DTO\UserRegistrationRequestDTO;
+use App\View\EmailSchema\ConfirmRegistrationByEmailSchema;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,39 +29,24 @@ class UserController extends AbstractController
         private DbManager                        $dbManager,
         private UserCollectionDtoMapperInterface $userCollectionDtoMapper,
         private UserRegistration                 $userRegistration,
-    ){
+        private UserRegistrationRequestDtoMapper $userRegistrationRequestDtoMapper,
+        private MailManager                      $mailManager,
+    )
+    {
 
     }
 
     #[Route('/users', name: 'create_user', methods: ["POST"])]
     public function createUser(
         #[ValueResolver('user_registration_request_dto')] UserRegistrationRequestDTO $dto,
-    ) : JsonResponse
+    ): JsonResponse
     {
-        $userRegistrationDTO = new UserRegistrationDTO(
-            $dto->login,
-            $dto->password,
-            $dto->email,
-            $dto->phoneNumber,
-            $dto->firstName,
-            $dto->lastName,
-            $dto->age,
-            $dto->pathToAvatar,
-            $dto->country,
-            $dto->city,
-            $dto->street,
-            $dto->houseNumber
-        );
+
+        $userRegistrationDTO = $this->userRegistrationRequestDtoMapper
+            ->mapToUserRegistrationDto($dto);
         try {
             $savedUserDTO = $this->userRegistration
                 ->registrationUser($userRegistrationDTO);
-            $mailer = new Mailer(Transport::fromDsn($_ENV['MAILER_DSN']));
-
-            $mailManager = new MailManager($mailer);
-            $mailManager->sendConfirmEmail(new ConfirmRegistrationDTO(
-                $savedUserDTO->confirmRegistrationToken,
-                $dto->email
-            ));
         } catch (DomainException $e) {
             return new JsonResponse(
                 $e->getMessage(),
@@ -91,7 +79,7 @@ class UserController extends AbstractController
     public function confirmRegistration(string $token): Response
     {
         try {
-            $this->userRegistration->confirmRegistration(new setConfirmUserDTO($token));
+            $this->userRegistration->confirmRegistration(new SetConfirmUserDTO($token));
         } catch (ConfirmUserException $e) {
             return new Response(
                 $e->getMessage(),

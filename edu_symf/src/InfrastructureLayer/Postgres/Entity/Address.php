@@ -11,7 +11,7 @@ class Address
 {
     #[ORM\Id]
     #[ORM\Column]
-    private null|string|Uuid $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 50)]
     private ?string $country = null;

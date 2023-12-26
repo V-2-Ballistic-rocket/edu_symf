@@ -30,6 +30,5 @@ class PostRequestPayloadMapper implements ValueResolverInterface
             $request->get('street') ?? null,
             $request->get('house_number') ?? null
         )];
-
     }
 }

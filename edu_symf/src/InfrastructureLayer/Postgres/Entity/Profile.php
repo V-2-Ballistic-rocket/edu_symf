@@ -11,7 +11,7 @@ class Profile
 {
     #[ORM\Id]
     #[ORM\Column]
-    private null|string|Uuid $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 30)]
     private ?string $first_name = null;

@@ -2,21 +2,21 @@
 
 namespace App\InfrastructureLayer\Mailer;
 
-use App\InfrastructureLayer\Mailer\DTO\ConfirmRegistrationDTO;
+use App\DomainLayer\Mail\DTO\SendConfirmMailDTO;
+use App\DomainLayer\Mail\MailManagerInterface;
 use App\View\EmailSchema\ConfirmRegistrationByEmailSchema;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-class MailManager
+class MailManager implements MailManagerInterface
 {
     public function __construct(
-        private ?Mailer $mailer = null
+        private MailerInterface $mailer
     )
     {
     }
 
-    public function sendConfirmEmail(ConfirmRegistrationDTO $confirmRegistrationDTO): void
+    public function sendConfirmEmail(SendConfirmMailDTO $confirmRegistrationDTO): void
     {
 
         $schemer = new ConfirmRegistrationByEmailSchema();

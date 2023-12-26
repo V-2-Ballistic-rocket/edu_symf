@@ -11,7 +11,7 @@ class Users
 {
     #[ORM\Id]
     #[ORM\Column]
-    private null|Uuid|string $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 30)]
     private ?string $login = null;
@@ -22,40 +22,41 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 15, nullable: true)]
     private ?string $phone_number = null;
 
-    #[ORM\Column(name: "address_id", type: "uuid", nullable: true)]
-    private null|Uuid|string $addressId;
+    #[ORM\Column(name: "address_id", nullable: true, length: 255)]
+    private ?string $addressId;
 
-    #[ORM\Column(name: "profile_id", type: "uuid", nullable: true)]
-    private null|Uuid|string $profileId;
+    #[ORM\Column(name: "profile_id", nullable: true, length: 255)]
+    private ?string $profileId;
 
-    #[ORM\Column(name: "token", type: "uuid", nullable: true)]
-    private null|Uuid|string $token;
+    #[ORM\Column(name: "token", nullable: true, length: 255)]
+    private ?string $token;
 
     #[ORM\Column(name: "confirm", type: "boolean")]
     private bool $confirmation = false;
 
     /**
-     * @param Uuid|null|string $id
+     * @param string|null $id
      * @param string|null $login
      * @param string|null $password
      * @param string|null $email
      * @param string|null $phone_number
-     * @param null|Uuid $addressId
-     * @param null|Uuid $profileId
+     * @param string|null $addressId
+     * @param string|null $profileId
+     * @param string|null $token
      * @param boolean $confirmation
      */
     public function __construct(
-        null|Uuid|string $id = null,
+        ?string $id = null,
         ?string $login = null,
         ?string $password = null,
         ?string $email = null,
         ?string $phone_number = null,
-        null|Uuid|string $addressId = null,
-        null|Uuid|string $profileId = null,
-        null|Uuid|string $token = null,
+        ?string $addressId = null,
+        ?string $profileId = null,
+        ?string $token = null,
         bool $confirmation = false
     )
     {
@@ -70,21 +71,18 @@ class Users
         $this->confirmation = $confirmation;
     }
 
-    public function getId(): null|Uuid|string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(null|Uuid|string $id): static
+    public function setId(?string $id): static
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLogin(): ?string
     {
         return $this->login;
@@ -133,14 +131,14 @@ class Users
         return $this;
     }
 
-    public function setAddressId(null|Uuid|string $addressId): static
+    public function setAddressId(?string $addressId): static
     {
         $this->addressId = $addressId;
 
         return $this;
     }
 
-    public function setProfileId(null|Uuid|string $profileId): static
+    public function setProfileId(?string $profileId): static
     {
         $this->profileId = $profileId;
 
@@ -148,14 +146,14 @@ class Users
     }
 
     #[ORM\JoinColumn(name: "address_id", referencedColumnName: "id")]
-    public function getAddressId(): null|Uuid|string
+    public function getAddressId(): ?string
     {
         return $this->addressId;
 
     }
 
     #[ORM\JoinColumn(name: "profile_id", referencedColumnName: "id")]
-    public function getProfileId(): null|Uuid|string
+    public function getProfileId(): ?string
     {
         return $this->profileId;
     }
@@ -165,5 +163,10 @@ class Users
         $this->confirmation = true;
 
         return $this;
+    }
+
+    public function isConfirm(): bool
+    {
+        return $this->confirmation;
     }
 }

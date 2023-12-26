@@ -2,88 +2,87 @@
 
 namespace App\DomainLayer\User\Registration;
 
-use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;
-use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
+use App\DomainLayer\Mail\DTO\SendConfirmMailDTO;
+use App\DomainLayer\Mail\Exceptions\SendMailException;
+use App\DomainLayer\Mail\MailManagerInterface;
+use App\DomainLayer\Storage\Exceptions\SaveUserException;
 use App\DomainLayer\Storage\StorageManagerInterface;
 use App\DomainLayer\User\Exceptions\ConfirmUserException;
-use App\DomainLayer\User\Exceptions\CreateUserException;
 use App\DomainLayer\User\Factory\UserFactory;
-use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;
-use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
-use App\DomainLayer\User\Registration\DTO\setConfirmUserDTO;
+use App\DomainLayer\User\Registration\DataMappers\GotUserDtoMapper;
+use App\DomainLayer\User\Registration\DataMappers\UserMapper;
+use App\DomainLayer\User\Registration\DataMappers\UserRegistrationDtoMapper;
+use App\DomainLayer\User\Registration\DTO\GetUserByTokenDTO;
+use App\DomainLayer\User\Registration\DTO\GotUserDTO;
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
+use App\DomainLayer\User\Registration\DTO\SetConfirmUserDTO;
 use App\DomainLayer\User\Registration\DTO\UserRegistrationDTO;
+use App\DomainLayer\User\User;
 use App\DomainLayer\User\UserDTO\CreateUserDTO;
-use App\DomainLayer\User\UserDTO\SaveUserDTO;
 use Symfony\Component\Validator\Validation;
 
 class UserRegistration
 {
     public function __construct(
-        private ?StorageManagerInterface $storageManager = null
+        private ?StorageManagerInterface   $storageManager = null,
+        private ?MailManagerInterface      $mailManager = null,
+        private ?GotUserDtoMapper          $gotUserDtoMapper = null,
+        private ?UserMapper                $userMapper = null,
+        private ?UserRegistrationDtoMapper $userRegistrationDtoMapper = null
     )
     {
     }
 
-    public function registrationUser(
-        UserRegistrationDTO $userRegistrationDTO
-    ) : SavedUserDTO
+    public function registrationUser(UserRegistrationDTO $userRegistrationDTO): SavedUserDTO
     {
-        $userFactory = new UserFactory(Validation::createValidator());
-        $user = $userFactory
-            ->createUser(new CreateUserDTO(
-                $userRegistrationDTO->login,
-                $userRegistrationDTO->password,
-                $userRegistrationDTO->email,
-                $userRegistrationDTO->phoneNumber,
-                new CreateProfileDTO(
-                    $userRegistrationDTO->firstName,
-                    $userRegistrationDTO->lastName,
-                    $userRegistrationDTO->age,
-                    $userRegistrationDTO->toAvatarPath
-                ),
-                new CreateAddressDTO(
-                    $userRegistrationDTO->country,
-                    $userRegistrationDTO->city,
-                    $userRegistrationDTO->street,
-                    $userRegistrationDTO->houseNumber
-                ),
-                $userRegistrationDTO->id,
-            ));
+        $createUserDTO = $this->userRegistrationDtoMapper->mapToCreateUserDTO($userRegistrationDTO);
+        $user = $this->createUser($createUserDTO);
 
         try {
-            $savedUserDto = $this->storageManager->saveUser(new SaveUserDTO(
-                $user->getLogin(),
-                $user->getPassword(),
-                $user->getEmail(),
-                $user->getPhoneNumber(),
-                new SaveProfileDTO(
-                    $user->getProfile()->getFirstName(),
-                    $user->getProfile()->getLastName(),
-                    $user->getProfile()->getAge(),
-                    $user->getProfile()->getAvatar(),
-                ),
-                new SaveAddressDTO(
-                    $user->getAddress()->getCountry(),
-                    $user->getAddress()->getCity(),
-                    $user->getAddress()->getStreet(),
-                    $user->getAddress()->getHouseNumber()
-                )
-            ));
-        } catch (\Exception $exception)
-        {
-            throw new CreateUserException();
+            $savedUserDto = $this->saveUser($user);
+        } catch (\Exception $exception) {
+            throw new SaveUserException();
         }
-
+        try {
+            $this->mailManager->sendConfirmEmail(new SendConfirmMailDTO($savedUserDto->confirmRegistrationToken, $user->getEmail()));
+        } catch (\Exception $exception) {
+            throw new SendMailException();
+        }
         return $savedUserDto;
     }
 
-    public function confirmRegistration(setConfirmUserDTO $confirmRegistrationDTO): void
+    public function confirmRegistration(SetConfirmUserDTO $confirmRegistrationDTO): void
     {
+        $gotUserDTO = $this->storageManager->getUserByToken(new GetUserByTokenDTO($confirmRegistrationDTO->token));
+
+        $createUserDTO = $this->gotUserDtoMapper->mapToCreateUserDTO($gotUserDTO);
+
+        $user = $this->createUser($createUserDTO);
+
+        $user->setIsConfirm(true);
+
         try {
-            $this->storageManager->confirmRegistration($confirmRegistrationDTO);
+            $this->saveUser($user);
         } catch (\Exception $e) {
             throw new ConfirmUserException();
         }
+    }
+
+    private function createUser(CreateUserDTO $createUserDTO): User
+    {
+        $userFactory = new UserFactory(Validation::createValidator());
+
+        return $userFactory->createUser($createUserDTO);
+    }
+
+    private function saveUser(User $user): SavedUserDTO
+    {
+        $saveUserDTO = $this->userMapper->mapToSaveUserDto($user);
+        return $this->storageManager->saveUser($saveUserDTO);
+    }
+
+    private function getUserByToken(SetConfirmUserDTO $setConfirmUserDTO): GotUserDTO
+    {
+        return $this->storageManager->getUserByToken(new GetUserByTokenDTO($setConfirmUserDTO->token));
     }
 }
