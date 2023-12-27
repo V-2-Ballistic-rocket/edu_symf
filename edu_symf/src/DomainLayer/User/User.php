@@ -17,9 +17,15 @@ class User
         private ?string $phoneNumber = '',
         private ?Profile $profile = null,
         private ?Address $address = null,
-        private bool $isConfirm = false
+        private bool $isConfirm = false,
+        private ?string $previousVersionId = null
     )
     {}
+
+    public function getPreviousVersionId(): ?string
+    {
+        return $this->previousVersionId;
+    }
 
     public function getId(): ?string
     {

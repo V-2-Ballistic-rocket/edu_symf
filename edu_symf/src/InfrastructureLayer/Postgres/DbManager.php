@@ -4,6 +4,7 @@ namespace App\InfrastructureLayer\Postgres;
 
 use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\Storage\StorageManagerInterface;
+use App\DomainLayer\User\Display\UserDisplay;
 use App\DomainLayer\User\Profile\DTO\SaveProfileDTO;
 use App\DomainLayer\User\Registration\DTO\GetUserByTokenDTO;
 use App\DomainLayer\User\Registration\DTO\GotUserDTO;
@@ -18,6 +19,7 @@ use App\InfrastructureLayer\Postgres\Entity\Users;
 use App\InfrastructureLayer\Postgres\User\DataMappers\UserCollectionMapper;
 use App\InfrastructureLayer\Postgres\User\DataMappers\UserEntityMapper;
 use App\InfrastructureLayer\Postgres\User\Profile\DTO\GetProfileByIdDTO;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -34,33 +36,39 @@ class DbManager implements StorageManagerInterface
     public function saveUser(SaveUserDTO $saveUserDTO): SavedUserDTO
     {
         $entityManager = $this->registry->getManagerForClass(Users::class);
-
         $addressId = $this->saveAddress($saveUserDTO->saveAddressDTO);
         $profileId = $this->saveProfile($saveUserDTO->saveProfileDTO);
-
-        $id = $saveUserDTO->id ?? Uuid::v1();
-        $confirmRegistrationToken = Uuid::v1();
+        if(!$saveUserDTO->isConfirm)
+        {
+            $confirmRegistrationToken = Uuid::v1();
+        } else {
+            $confirmRegistrationToken = null;
+        }
+        $id = (string)$saveUserDTO->id;
         $user = new Users(
-            (string)$id,
+            $id,
             $saveUserDTO->login,
             $saveUserDTO->password,
             $saveUserDTO->email,
             $saveUserDTO->phoneNumber,
-            (string)$addressId,
-            (string)$profileId,
-            (string)$confirmRegistrationToken
+            $addressId,
+            $profileId,
+            $confirmRegistrationToken,
+            $saveUserDTO->isConfirm
         );
-        $entityManager->persist($user);
-
-        try {
-            $entityManager->flush();
-        } catch (\Exception $e) {
-            dd($e->getMessage(), $e->getCode(), $e->getTraceAsString());
+        if($this->isThere($user))
+        {
+            $user->setPreviousVersionId($user->getId());
+            $id = Uuid::v1();
+            $user->setId($id);
         }
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         return new SavedUserDTO(
             $id,
-            (string)$confirmRegistrationToken
+            (string)$confirmRegistrationToken,
+            $saveUserDTO->email
         );
     }
 
@@ -169,5 +177,16 @@ class DbManager implements StorageManagerInterface
     {
         $repository = $this->registry->getRepository(Profile::class);
         return $repository->find($getProfileByIdDTO->id);
+    }
+
+    private function isThere(Object $entity): bool
+    {
+        $repository = $this->registry->getRepository($entity::class);
+        $result = $repository->find($entity->getId());
+        if(!$result)
+        {
+            return false;
+        }
+        return true;
     }
 }

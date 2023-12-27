@@ -34,6 +34,9 @@ class Users
     #[ORM\Column(name: "token", nullable: true, length: 255)]
     private ?string $token;
 
+    #[ORM\Column(name: "previous_version", nullable: true, length: 255)]
+    private ?string $previousVersionId;
+
     #[ORM\Column(name: "confirm", type: "boolean")]
     private bool $confirmation = false;
 
@@ -47,6 +50,7 @@ class Users
      * @param string|null $profileId
      * @param string|null $token
      * @param boolean $confirmation
+     * @param string|null $previousVersion
      */
     public function __construct(
         ?string $id = null,
@@ -57,7 +61,8 @@ class Users
         ?string $addressId = null,
         ?string $profileId = null,
         ?string $token = null,
-        bool $confirmation = false
+        bool $confirmation = false,
+        ?string $previousVersion = null
     )
     {
         $this->id = $id;
@@ -68,7 +73,13 @@ class Users
         $this->addressId = $addressId;
         $this->profileId = $profileId;
         $this->token = $token;
+        $this->previousVersionId = $previousVersion;
         $this->confirmation = $confirmation;
+    }
+
+    public function setPreviousVersionId(?string $previousVersionId): void
+    {
+        $this->previousVersionId = $previousVersionId;
     }
 
     public function getId(): ?string
@@ -168,5 +179,10 @@ class Users
     public function isConfirm(): bool
     {
         return $this->confirmation;
+    }
+
+    public function getPreviousVersionId(): ?string
+    {
+        return $this->previousVersionId;
     }
 }

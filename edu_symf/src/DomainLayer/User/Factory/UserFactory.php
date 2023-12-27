@@ -21,7 +21,7 @@ class UserFactory
     )
     {}
 
-    public function createUser(CreateUserDTO $createUserDTO) : ?User
+    public function     createUser(CreateUserDTO $createUserDTO) : ?User
     {
         $id = $createUserDTO->id ?? $this->createId();
         $errors = $this->validator->validate($createUserDTO);

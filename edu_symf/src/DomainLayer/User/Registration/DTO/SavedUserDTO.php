@@ -7,7 +7,8 @@ use Symfony\Component\Uid\Uuid;
 class SavedUserDTO
 {
     public function __construct(
-        public null|string|Uuid $id = null,
-        public null|string|Uuid $confirmRegistrationToken = null
+        public ?string $id = null,
+        public ?string $confirmRegistrationToken = null,
+        public ?string $email = null
     ){}
 }
