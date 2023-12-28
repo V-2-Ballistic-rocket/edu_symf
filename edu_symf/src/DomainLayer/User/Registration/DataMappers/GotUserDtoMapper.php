@@ -48,7 +48,8 @@ class GotUserDtoMapper
                 $gotUserDTO->city,
                 $gotUserDTO->street,
                 $gotUserDTO->houseNumber
-            )
+            ),
+            $gotUserDTO->isConfirm
         );
     }
 }

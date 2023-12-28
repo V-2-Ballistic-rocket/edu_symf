@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\InfrastructureLayer\User\DataMappers;
+namespace App\Tests\test\Unit\InfrastructureLayer\User\DataMappers;
 
 use App\DomainLayer\Address\AddressDTO\AddressDTO;
 use App\DomainLayer\User\Profile\DTO\ProfileDTO;

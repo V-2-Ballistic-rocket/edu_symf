@@ -18,7 +18,8 @@ readonly class CreateUserDTO
         #[CustomAssert\ContainPhoneNumber]
         public ?string $phoneNumber = '',
         public ?CreateProfileDTO $createProfileDTO = null,
-        public ?CreateAddressDTO $createAddressDTO = null
+        public ?CreateAddressDTO $createAddressDTO = null,
+        public bool $isConfirm = false
     )
     {}
 }

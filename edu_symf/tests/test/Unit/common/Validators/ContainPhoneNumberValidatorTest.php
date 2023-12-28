@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\common\Validators;
+namespace App\Tests\test\Unit\common\Validators;
 
 use App\common\Validators\ContainPhoneNumber;
 use App\common\Validators\ContainPhoneNumberValidator;

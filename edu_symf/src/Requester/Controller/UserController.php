@@ -3,6 +3,7 @@
 namespace App\Requester\Controller;
 
 use App\DomainLayer\Exceptions\DomainException;
+use App\DomainLayer\Storage\DTO\GetUserByIdDTO;
 use App\DomainLayer\User\Display\UserDisplay;
 use App\DomainLayer\User\Exceptions\ConfirmUserException;
 use App\DomainLayer\User\Registration\DTO\SetConfirmUserDTO;
@@ -27,13 +28,15 @@ class UserController extends AbstractController
     #[Route('/users', name: 'create_user', methods: ["POST"])]
     public function createUser(
         #[ValueResolver('user_registration_request_dto')] UserRegistrationRequestDTO $dto,
-    ): JsonResponse
+    ): Response
     {
         $userRegistrationDTO = $this->userRegistrationRequestDtoMapper
             ->mapToUserRegistrationDto($dto);
+
         try {
             $savedUserDTO = $this->userRegistration
                 ->registrationUser($userRegistrationDTO);
+
         } catch (DomainException $e) {
             return new JsonResponse(
                 $e->getMessage(),
@@ -45,8 +48,9 @@ class UserController extends AbstractController
                 $e->getCode()
             );
         }
-        return new JsonResponse(
-            "Saved new user with id - {$savedUserDTO->id}",
+
+        return new Response(
+            "<h1>Письмо с подтверждением отправлено на почту {$savedUserDTO->email}!</h1>",
             status: 200
         );
     }
@@ -73,7 +77,7 @@ class UserController extends AbstractController
             );
         }
         return new Response(
-            '',
+            '<h1>Успех!</h1>',
             200
         );
     }

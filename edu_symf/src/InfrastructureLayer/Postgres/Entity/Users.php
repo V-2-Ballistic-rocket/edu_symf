@@ -26,19 +26,22 @@ class Users
     private ?string $phone_number = null;
 
     #[ORM\Column(name: "address_id", nullable: true, length: 255)]
-    private ?string $addressId;
+    private ?string $addressId = null;
 
     #[ORM\Column(name: "profile_id", nullable: true, length: 255)]
-    private ?string $profileId;
+    private ?string $profileId = null;
 
     #[ORM\Column(name: "token", nullable: true, length: 255)]
-    private ?string $token;
+    private ?string $token = null;
 
     #[ORM\Column(name: "previous_version", nullable: true, length: 255)]
-    private ?string $previousVersionId;
+    private ?string $previousVersionId = null;
 
     #[ORM\Column(name: "confirm", type: "boolean")]
     private bool $confirmation = false;
+
+    #[ORM\Column(name: "editdate", type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $editDate = null;
 
     /**
      * @param string|null $id
@@ -46,6 +49,7 @@ class Users
      * @param string|null $password
      * @param string|null $email
      * @param string|null $phone_number
+     * @param \DateTimeInterface|null $editDate
      * @param string|null $addressId
      * @param string|null $profileId
      * @param string|null $token
@@ -58,6 +62,7 @@ class Users
         ?string $password = null,
         ?string $email = null,
         ?string $phone_number = null,
+        ?\DateTimeInterface $editDate = null,
         ?string $addressId = null,
         ?string $profileId = null,
         ?string $token = null,
@@ -70,6 +75,7 @@ class Users
         $this->password = $password;
         $this->email = $email;
         $this->phone_number = $phone_number;
+        $this->editDate = $editDate;
         $this->addressId = $addressId;
         $this->profileId = $profileId;
         $this->token = $token;
@@ -79,6 +85,7 @@ class Users
 
     public function setPreviousVersionId(?string $previousVersionId): void
     {
+
         $this->previousVersionId = $previousVersionId;
     }
 

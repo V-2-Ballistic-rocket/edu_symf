@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Domain\User\Profile\Factory;
+namespace App\Tests\test\Unit\Domain\User\Profile\Factory;
 
 use App\DomainLayer\User\Profile\Avatar\Avatar;
 use App\DomainLayer\User\Profile\DTO\CreateProfileDTO;

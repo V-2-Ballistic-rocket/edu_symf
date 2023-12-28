@@ -28,7 +28,8 @@ class UserMapper
                 $user->getAddress()->getCity(),
                 $user->getAddress()->getStreet(),
                 $user->getAddress()->getHouseNumber()
-            )
+            ),
+            $user->isConfirm()
         );
     }
 }

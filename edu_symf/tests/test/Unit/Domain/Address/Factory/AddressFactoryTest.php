@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Domain\Address\Factory;
+namespace App\Tests\test\Unit\Domain\Address\Factory;
 
 use App\DomainLayer\Address\Address;
 use App\DomainLayer\Address\AddressDTO\CreateAddressDTO;

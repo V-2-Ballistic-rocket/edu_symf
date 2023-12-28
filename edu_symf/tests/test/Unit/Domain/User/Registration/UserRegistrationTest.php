@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Domain\User\Registration;
+namespace App\Tests\test\Unit\Domain\User\Registration;
 
 use App\DomainLayer\User\Registration\DTO\SavedUserDTO;
 use App\DomainLayer\User\Registration\DTO\SetConfirmUserDTO;

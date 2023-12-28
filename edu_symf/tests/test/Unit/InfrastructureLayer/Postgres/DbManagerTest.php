@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\InfrastructureLayer\Postgres;
+namespace App\Tests\test\Unit\InfrastructureLayer\Postgres;
 
 use App\DomainLayer\Address\AddressDTO\SaveAddressDTO;
 use App\DomainLayer\User\Profile\Avatar\Avatar;
