@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Uid\Uuid;
 
-class ConfirmRegistration extends WebTestCase
+class ConfirmRegistrationTest extends WebTestCase
 {
     private ?KernelBrowser $client = null;
     private ?ContainerInterface $container = null;
@@ -65,13 +65,6 @@ class ConfirmRegistration extends WebTestCase
         $lastEntity = $repository->findOneBy([], ['editDate' => 'DESC']);
         $this->entityManager->remove($lastEntity);
         $this->entityManager->flush();
-//        $lastAddress = $repository->find($lastEntity->getAddressId());
-//        $this->entityManager->remove($lastAddress);
-//
-//        $lastProfile = $repository->find($lastEntity->getProfileId());
-//        $this->entityManager->remove($lastProfile);
-//
-//        $this->entityManager->remove($lastEntity);
 
         $lastEntity = $repository->findOneBy([], ['editDate' => 'DESC']);
         $this->entityManager->remove($lastEntity);
