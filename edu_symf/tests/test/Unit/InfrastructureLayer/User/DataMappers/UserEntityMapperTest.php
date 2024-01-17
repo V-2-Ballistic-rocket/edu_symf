@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\InfrastructureLayer\User\DataMappers;
+namespace App\Tests\test\Unit\InfrastructureLayer\User\DataMappers;
 
 use App\InfrastructureLayer\Postgres\Entity\Address;
 use App\InfrastructureLayer\Postgres\Entity\Profile;

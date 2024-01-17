@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\InfrastructureLayer\Postgres;
+namespace App\Tests\test\Unit\InfrastructureLayer\Postgres;
 
 use App\InfrastructureLayer\Postgres\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

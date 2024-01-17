@@ -18,7 +18,6 @@ class MailManager implements MailManagerInterface
 
     public function sendConfirmEmail(SendConfirmMailDTO $confirmRegistrationDTO): void
     {
-
         $schemer = new ConfirmRegistrationByEmailSchema();
 
         $getMessageDTO = $schemer->getMessage((string)$confirmRegistrationDTO->confirmRegistrationToken);

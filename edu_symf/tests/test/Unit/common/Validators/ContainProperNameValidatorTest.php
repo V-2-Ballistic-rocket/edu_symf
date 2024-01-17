@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\common\Validators;
+namespace App\Tests\test\Unit\common\Validators;
 
 use App\common\Validators\ContainProperName;
 use App\common\Validators\ContainProperNameValidator;

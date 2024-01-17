@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\common\Validators;
+namespace App\Tests\test\Unit\common\Validators;
 
 use App\common\Validators\ContainAge;
 use App\common\Validators\ContainAgeValidator;

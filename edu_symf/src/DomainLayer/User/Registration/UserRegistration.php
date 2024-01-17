@@ -35,7 +35,9 @@ class UserRegistration
 
     public function registrationUser(UserRegistrationDTO $userRegistrationDTO): SavedUserDTO
     {
+
         $createUserDTO = $this->userRegistrationDtoMapper->mapToCreateUserDTO($userRegistrationDTO);
+
         $user = $this->createUser($createUserDTO);
 
         try {
@@ -53,16 +55,16 @@ class UserRegistration
 
     public function confirmRegistration(SetConfirmUserDTO $confirmRegistrationDTO): void
     {
+
         $gotUserDTO = $this->storageManager->getUserByToken(new GetUserByTokenDTO($confirmRegistrationDTO->token));
-
         $createUserDTO = $this->gotUserDtoMapper->mapToCreateUserDTO($gotUserDTO);
-
         $user = $this->createUser($createUserDTO);
 
         $user->setIsConfirm(true);
 
         try {
             $this->saveUser($user);
+
         } catch (\Exception $e) {
             throw new ConfirmUserException();
         }
@@ -78,11 +80,7 @@ class UserRegistration
     private function saveUser(User $user): SavedUserDTO
     {
         $saveUserDTO = $this->userMapper->mapToSaveUserDto($user);
-        return $this->storageManager->saveUser($saveUserDTO);
-    }
 
-    private function getUserByToken(SetConfirmUserDTO $setConfirmUserDTO): GotUserDTO
-    {
-        return $this->storageManager->getUserByToken(new GetUserByTokenDTO($setConfirmUserDTO->token));
+        return $this->storageManager->saveUser($saveUserDTO);
     }
 }

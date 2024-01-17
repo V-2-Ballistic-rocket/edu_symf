@@ -7,3 +7,5 @@ doctrine_migrations:
     migrations:
         - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231204145028"
         - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231226121521"
+        - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231227071852"
+        - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231228110604"
