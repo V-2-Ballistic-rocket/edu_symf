@@ -61,7 +61,6 @@
             --form 'city="city"' \
             --form 'street="street"' \
             --form 'house_number="14a"'
-
         Выполнится метод контроллера
         edu_symf/src/Requester/Controller/UserController.php createUser()
 
@@ -80,12 +79,13 @@
                   "city" => "city"
                   "street" => "street"
                   "house_number" => "123a"
-
         Выполнится метод контроллера
         edu_symf/src/Requester/Controller/UserController.php createUser()
 
+
         На результат можно посмотреть в самой бд,
         там должен появиться новый неподтвержденный аккаунт.
+
 
     2.2. Подтверждение регистрации через почту
 
@@ -101,6 +101,7 @@
         Она выполнит edu_symf/src/Requester/Controller/UserController.php confirmRegistration()
 
         Результат будет в бд
+
 
     2.3. Вывод всех пользователей в json формате:
 
