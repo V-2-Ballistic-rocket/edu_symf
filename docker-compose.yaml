@@ -3,6 +3,7 @@ version: '3'
 services:
 
   php-fpm:
+    container_name: php-fpm-sr
     build: ./docker/php-fpm
     ports:
       - "80:8000"

@@ -34,7 +34,7 @@ class ConfirmRegistrationByEmailSchema
     </td>
   </tr>
 </table>";
-        $text = "Спасибо за регистрацию! Перейдите по ссылке чтобы подтвердить учетную запись: http://localhost:8000/users/registration/confirm/{$token}";
+        $text = "Спасибо за регистрацию! Перейдите по ссылке чтобы подтвердить учетную запись: http://localhost:80/users/registration/confirm/{$token}";
 
         return new GetMessageDto($html, $text);
     }
