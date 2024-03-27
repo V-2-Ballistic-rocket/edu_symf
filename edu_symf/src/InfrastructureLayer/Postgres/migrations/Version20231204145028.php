@@ -34,6 +34,7 @@ final class Version20231204145028 extends AbstractMigration
             address_id UUID,
             token UUID,
             confirm BOOLEAN DEFAULT FALSE,
+            editDate TIMESTAMP(0) WITHOUT TIME ZONE,
             CONSTRAINT FK_profile FOREIGN KEY (profile_id) REFERENCES profile (id),
             CONSTRAINT FK_address FOREIGN KEY (address_id) REFERENCES address (id),
             PRIMARY KEY(id))'

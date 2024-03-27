@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231228110604 extends AbstractMigration
+final class Version20240327190446 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -19,14 +19,15 @@ final class Version20231228110604 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE users ADD editDate TIMESTAMP(0) WITHOUT TIME ZONE');
+        $this->addSql('ALTER TABLE users ADD previous_version VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE users RENAME COLUMN editdate TO edit_date');
+
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE users DROP editDate');
+        $this->addSql('ALTER TABLE users DROP previous_version');
+        $this->addSql('ALTER TABLE users RENAME COLUMN edit_date TO editdate');
+
     }
 }

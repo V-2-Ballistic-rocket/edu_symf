@@ -40,7 +40,7 @@ class Users
     #[ORM\Column(name: "confirm", type: "boolean")]
     private bool $confirmation = false;
 
-    #[ORM\Column(name: "editdate", type: "datetime", nullable: true)]
+    #[ORM\Column(name: "edit_date", type: "datetime", nullable: true)]
     private ?\DateTimeInterface $editDate = null;
 
     /**
@@ -191,5 +191,10 @@ class Users
     public function getPreviousVersionId(): ?string
     {
         return $this->previousVersionId;
+    }
+
+    public function getEditDate(): ?\DateTimeInterface
+    {
+        return $this->editDate;
     }
 }

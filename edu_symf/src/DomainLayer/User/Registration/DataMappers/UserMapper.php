@@ -11,6 +11,7 @@ class UserMapper
 {
     public function mapToSaveUserDto(User $user): SaveUserDto
     {
+
         return new SaveUserDTO(
             $user->getId(),
             $user->getLogin(),

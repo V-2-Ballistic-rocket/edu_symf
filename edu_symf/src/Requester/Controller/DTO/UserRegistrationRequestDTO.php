@@ -8,15 +8,15 @@ readonly class UserRegistrationRequestDTO
         public mixed $login = '',
         public mixed $password = '',
         public mixed $email = '',
-        public mixed $phoneNumber = '',
-        public mixed $firstName = '',
-        public mixed $lastName = '',
+        public mixed $phone_number = '',
+        public mixed $first_name = '',
+        public mixed $last_name = '',
         public mixed $age = 0,
-        public mixed $pathToAvatar = '',
+        public mixed $path_to_avatar = '',
         public mixed $country = '',
         public mixed $city = '',
         public mixed $street = '',
-        public mixed $houseNumber = ''
+        public mixed $house_number = ''
     )
     {}
 }

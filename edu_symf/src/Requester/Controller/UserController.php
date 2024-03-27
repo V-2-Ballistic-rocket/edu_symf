@@ -36,7 +36,6 @@ class UserController extends AbstractController
         try {
             $savedUserDTO = $this->userRegistration
                 ->registrationUser($userRegistrationDTO);
-
         } catch (DomainException $e) {
             return new JsonResponse(
                 $e->getMessage(),

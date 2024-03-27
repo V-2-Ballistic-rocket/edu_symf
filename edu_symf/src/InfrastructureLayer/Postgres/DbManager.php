@@ -57,6 +57,7 @@ class DbManager implements StorageManagerInterface
 
         if($this->isThere($user))
         {
+
             $user->setPreviousVersionId($user->getId());
             $user->setId((string)Uuid::v1());
         }

@@ -9,20 +9,19 @@ class UserRegistrationRequestDtoMapper
 {
     public function mapToUserRegistrationDto(UserRegistrationRequestDTO $dto): UserRegistrationDTO
     {
-
         return new UserRegistrationDTO(
             $dto->login,
             $dto->password,
             $dto->email,
-            $dto->phoneNumber,
-            $dto->firstName,
-            $dto->lastName,
+            $dto->phone_number,
+            $dto->first_name,
+            $dto->last_name,
             $dto->age,
-            $dto->pathToAvatar,
+            $dto->path_to_avatar,
             $dto->country,
             $dto->city,
             $dto->street,
-            $dto->houseNumber
+            $dto->house_number
         );
     }
 }

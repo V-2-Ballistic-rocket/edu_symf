@@ -45,6 +45,7 @@ class UserRegistration
         } catch (\Exception $exception) {
             throw new SaveUserException();
         }
+
         try {
             $this->mailManager->sendConfirmEmail(new SendConfirmMailDTO($savedUserDto->confirmRegistrationToken, $user->getEmail()));
         } catch (\Exception $exception) {

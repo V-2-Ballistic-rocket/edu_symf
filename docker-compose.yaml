@@ -1,10 +1,11 @@
 version: '3'
+
 services:
 
   php-fpm:
     build: ./docker/php-fpm
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - ./edu_symf:/app
     environment:
@@ -20,6 +21,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
+
   mailhog:
     container_name: programwithgio-mailhog
     image: mailhog/mailhog

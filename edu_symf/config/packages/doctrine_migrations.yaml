@@ -6,6 +6,4 @@ doctrine_migrations:
     enable_profiler: false
     migrations:
         - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231204145028"
-        - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231226121521"
-        - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231227071852"
-        - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20231228110604"
+        - "App\\InfrastructureLayer\\Postgres\\migrations\\Version20240327190446"

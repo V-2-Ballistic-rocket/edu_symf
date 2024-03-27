@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/edu_symf/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/edu_symf/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/edu_symf/vendor/doctrine/cache" />
