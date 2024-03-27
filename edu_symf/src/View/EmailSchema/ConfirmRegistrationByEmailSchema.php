@@ -23,7 +23,7 @@ class ConfirmRegistrationByEmailSchema
         <!-- Блок номер 1 -->
         <!-- Блок номер 2 -->
          <span style='display:inline-block; width:300px;'>
-              <a href='http://localhost:8000/users/registration/confirm/{$token}'>подтвердить регистрацию</a>
+              <a href='http://localhost:80/users/registration/confirm/{$token}'>подтвердить регистрацию</a>
          </span>
         <!-- Блок номер 2 →
 
